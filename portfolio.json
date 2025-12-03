@@ -1,0 +1,603 @@
+{
+  "portfolio": [
+    {
+      "name": "Euronav",
+      "isin": "BE0003816338",
+      "ticker": "EURN",
+      "shares": 267.2,
+      "avgPrice": 8.46,
+      "note": "",
+      "id": "09224c50-b9e4-4150-9398-dbb2b606189b"
+    },
+    {
+      "id": "6679b487-4d8d-48cb-822e-56f2d02b1359",
+      "name": "FLEX LNG",
+      "isin": "BMG359472021",
+      "ticker": "FLNG",
+      "shares": 83,
+      "avgPrice": 26.97,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "feb795d6-8a0e-47fc-b203-e50aa92e421e",
+      "name": "Thungela",
+      "isin": "ZAE000296554",
+      "ticker": "TNGRF",
+      "shares": 365,
+      "avgPrice": 5.45,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "b3679a80-fcd0-42d0-9762-fa6e41521c8c",
+      "name": "Dorian LPG",
+      "isin": "MHY2106R1100",
+      "ticker": "LPG",
+      "shares": 91,
+      "avgPrice": 21.14,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "f7cefa9f-bf62-4c1e-b431-739a055cb513",
+      "name": "Torm",
+      "isin": "GB00BZ3CNK81",
+      "ticker": "TRMD",
+      "shares": 110,
+      "avgPrice": 15.99,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "ab092044-c515-47cc-bc27-811f53051571",
+      "name": "Ecopetrol ADR",
+      "isin": "US2791581091",
+      "ticker": "EC",
+      "shares": 167,
+      "avgPrice": 7.99,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "0e8e7b6e-3027-434e-8c2c-c398ea927b89",
+      "name": "Medical Properties Trust",
+      "isin": "US58463J3041",
+      "ticker": "MPW",
+      "shares": 229,
+      "avgPrice": 5.45,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "bb4d320f-ec5c-4a34-aa4f-8333ec5215a3",
+      "name": "Vale",
+      "isin": "BRVALEACNOR0",
+      "ticker": "VALE3.SA",
+      "shares": 107,
+      "avgPrice": 9.17,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "1fe01111-05d5-4b26-9cdf-805993a8e32a",
+      "name": "Petrobras",
+      "isin": "BRPETRACNOR9",
+      "ticker": "PETR3.SA",
+      "shares": 155,
+      "avgPrice": 6.21,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "962d9399-fa30-4c5a-9d09-d66cb1105920",
+      "name": "Energean",
+      "isin": "GB00BG12Y042",
+      "ticker": "ENOG.TA",
+      "shares": 87,
+      "avgPrice": 10.55,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "22ebbcd0-7b2b-4b25-bdbc-92356f9ac90d",
+      "name": "BW LPG",
+      "isin": "SGXZ69436764",
+      "ticker": "BWLPG.OL",
+      "shares": 117.5,
+      "avgPrice": 7.45,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "82731a1f-8f79-4a0a-9e89-1939d7a3ed85",
+      "name": "BP",
+      "isin": "GB0007980591",
+      "ticker": "BPAQF",
+      "shares": 183.66,
+      "avgPrice": 4.53,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "8f4d243e-2813-4bfb-beee-eb9872450c2f",
+      "name": "Arbor Realty Trust",
+      "isin": "US0389231087",
+      "ticker": "ABR",
+      "shares": 71,
+      "avgPrice": 11.16,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "fe20dacc-9899-482f-b3fd-96331ba06d02",
+      "name": "Lufthansa",
+      "isin": "DE0008232125",
+      "ticker": "LHA.DE",
+      "shares": 105,
+      "avgPrice": 7.32,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "4d00279c-4eb1-43d4-93eb-d36ec252caa8",
+      "name": "Volkswagen (Vz)",
+      "isin": "DE0007664039",
+      "ticker": "VOW3.DE",
+      "shares": 8,
+      "avgPrice": 93.9,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "33602d82-13d6-4096-bc51-6df49fa265db",
+      "name": "DOW",
+      "isin": "US2605571031",
+      "ticker": "DOW",
+      "shares": 25,
+      "avgPrice": 27.91,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "a71ebc5d-4572-491d-a20a-d08273701a5f",
+      "name": "International Seaways",
+      "isin": "MHY410531021",
+      "ticker": "INSW",
+      "shares": 20,
+      "avgPrice": 34.29,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "ef04efde-f9a3-4d48-8b84-77a392005aed",
+      "name": "APA",
+      "isin": "US03743Q1085",
+      "ticker": "APA",
+      "shares": 35,
+      "avgPrice": 19.53,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "2aee37f3-f154-48e3-9948-0c9c4640eb91",
+      "name": "UPS",
+      "isin": "US9113121068",
+      "ticker": "UPS",
+      "shares": 8,
+      "avgPrice": 84.35,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "01c86c5a-a693-43e3-946a-93eb4deb359a",
+      "name": "iShares EUR Ultrashort Bond UCITS ETF - ACC",
+      "isin": "IE000RHYOR04",
+      "ticker": "ERNX.DE",
+      "shares": 123.6,
+      "avgPrice": 5.45,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "b311933e-3302-4a72-a28e-b81de4b972dc",
+      "name": "Enagas",
+      "isin": "ES0130960018",
+      "ticker": "ENG.MC",
+      "shares": 52,
+      "avgPrice": 12.88,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "d50349c4-822b-492d-a0c3-39d1bdce6b2d",
+      "name": "Riley Exploration Permian",
+      "isin": "US76665T1025",
+      "ticker": "REPX",
+      "shares": 27,
+      "avgPrice": 24.22,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "bca629d7-6dd0-4e91-b26b-5b1694448dfe",
+      "name": "British American Tobacco",
+      "isin": "GB0002875804",
+      "ticker": "BATS.L",
+      "shares": 19,
+      "avgPrice": 32.02,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "cc16799a-75e0-41fb-b4c2-761ecbfa8117",
+      "name": "Innovative Industrial Properties",
+      "isin": "US45781V1017",
+      "ticker": "IIPR",
+      "shares": 10,
+      "avgPrice": 58.13,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "64bb1fde-de02-4138-ac47-ff044667ddd2",
+      "name": "ZIM Integrated Shipping Services",
+      "isin": "IL0065100930",
+      "ticker": "ZIM",
+      "shares": 39,
+      "avgPrice": 14.5,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "ae26f0b0-8882-40dc-a7f8-24e5dc7e85b1",
+      "name": "Global Medical REIT",
+      "isin": "US37954A2042",
+      "ticker": "GMRE",
+      "shares": 86,
+      "avgPrice": 6.4,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "b22e0292-1ece-4c36-94c0-45b3af98312d",
+      "name": "iShares $ Treasury Bond 20+yr UCITS ETF - USD DIS",
+      "isin": "IE00BSKRJZ44",
+      "ticker": "IS04.DE",
+      "shares": 171.12,
+      "avgPrice": 3.05,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "212cb202-b9db-45a7-8dac-77c4e748003f",
+      "name": "Kraft Heinz",
+      "isin": "US5007541064",
+      "ticker": "KHC",
+      "shares": 20,
+      "avgPrice": 25.5,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "84e91189-4be5-49e7-8d42-1ced3e35b655",
+      "name": "BCE",
+      "isin": "CA05534B7604",
+      "ticker": "BCE",
+      "shares": 21.62,
+      "avgPrice": 23.53,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "1401dae6-ccd9-4c68-8a2d-7402813b10d4",
+      "name": "Cardinal Energy",
+      "isin": "CA14150G4007",
+      "ticker": "CJ.TO",
+      "shares": 123,
+      "avgPrice": 4.13,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "d20823e4-1004-4b23-b7df-46ce767f9add",
+      "name": "Glencore PLC",
+      "isin": "JE00B4T3BW64",
+      "ticker": "GLCNF",
+      "shares": 93,
+      "avgPrice": 5.25,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "64b833e2-1f1f-4b34-80ba-1ee1ec4c36a1",
+      "name": "BANCO DO BRASIL ADR",
+      "isin": "US0595781040",
+      "ticker": "BDORY",
+      "shares": 118,
+      "avgPrice": 4.12,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "1e296959-2466-4747-918f-ef31c4134e3c",
+      "name": "Realty Income",
+      "isin": "US7561091049",
+      "ticker": "O",
+      "shares": 9,
+      "avgPrice": 53.04,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "60173028-1a97-4c5d-8d30-a39ced0c409c",
+      "name": "Frontline Ltd",
+      "isin": "CY0200352116",
+      "ticker": "FRO",
+      "shares": 31,
+      "avgPrice": 14.92,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "551757c8-0be8-45f9-88c4-2f6b4445f8fb",
+      "name": "Exxaro Resources Aktie",
+      "isin": "ZAE000084992",
+      "ticker": "EXX",
+      "shares": 59,
+      "avgPrice": 7.72,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "48f7cab2-3415-4461-b537-ed5fa0a2f2dc",
+      "name": "Diana Shipping",
+      "isin": "MHY2066G1044",
+      "ticker": "DSX",
+      "shares": 267,
+      "avgPrice": 1.69,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "b90cd6fb-cc86-4832-89f2-6c1aad2925dd",
+      "name": "Petrotal",
+      "isin": "CA71677J1012",
+      "ticker": "TAL",
+      "shares": 1063,
+      "avgPrice": 0.41,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "e83de515-dc6d-4b17-9f1b-a5889f2b5474",
+      "name": "Pfizer",
+      "isin": "US7170811035",
+      "ticker": "PFE",
+      "shares": 19,
+      "avgPrice": 22.35,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "558c42cb-8ef8-4000-b89e-a8db7b259ae6",
+      "name": "Valterra Platinum",
+      "isin": "ZAE000013181",
+      "ticker": "VAL",
+      "shares": 11.41,
+      "avgPrice": 36.23,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "1ed55e80-2cd4-45dd-906d-b7a29704bc72",
+      "name": "BHP",
+      "isin": "AU000000BHP4",
+      "ticker": "BHP",
+      "shares": 18.06,
+      "avgPrice": 22.88,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "0cb3dbfe-83b8-4c67-80a7-d0ca95d2e5cf",
+      "name": "Rio Tinto Ltd. (Australien)",
+      "isin": "AU000000RIO1",
+      "ticker": "RIO",
+      "shares": 6,
+      "avgPrice": 67.58,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "0878b6e3-935d-4579-9151-36827ec21b96",
+      "name": "MPC Container Ships",
+      "isin": "NO0010791353",
+      "ticker": "MPCC",
+      "shares": 263,
+      "avgPrice": 1.5,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "5d1f04c5-17c8-42bd-9812-adbbaf80d772",
+      "name": "REPSOL",
+      "isin": "ES0173516115",
+      "ticker": "REP",
+      "shares": 34,
+      "avgPrice": 11.51,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "6d8a1589-207b-4c19-8be1-005ada49101a",
+      "name": "Western Union",
+      "isin": "US9598021098",
+      "ticker": "WU",
+      "shares": 47,
+      "avgPrice": 8.29,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "7a0184c0-ab56-4ec4-8e3f-4312340af165",
+      "name": "InPlay Oil",
+      "isin": "CA45780T4046",
+      "ticker": "IPO",
+      "shares": 53.83,
+      "avgPrice": 7.22,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "5b6157b6-e534-426f-8eb0-ae3b2481efa0",
+      "name": "Gladstone Land",
+      "isin": "US3765491010",
+      "ticker": "LAND",
+      "shares": 37,
+      "avgPrice": 70.4,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "ded2eda1-9368-4b76-8caa-03e2bb7f8551",
+      "name": "Enel",
+      "isin": "IT0003128367",
+      "ticker": "ENEL",
+      "shares": 65,
+      "avgPrice": 5.85,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "9fe0c5e4-2087-4063-b133-d7c20b8117c4",
+      "name": "Petroleo Brasileiro Pref. (ADR)",
+      "isin": "US71654V1017",
+      "ticker": "PBR.A",
+      "shares": 33,
+      "avgPrice": 11.14,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "9f57bf65-de04-41b3-bc87-a3e1b55474c5",
+      "name": "Porsche Automobil Holding",
+      "isin": "DE000PAH0038",
+      "ticker": "PAH3",
+      "shares": 10,
+      "avgPrice": 36.67,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "61dfd713-3c5d-406d-b66a-671851c162c3",
+      "name": "ORLEN",
+      "isin": "PLPKN0000018",
+      "ticker": "PKN",
+      "shares": 30,
+      "avgPrice": 12.19,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "4234f79a-e878-400d-818b-509eefb2062c",
+      "name": "Champion Iron",
+      "isin": "AU000000CIA2",
+      "ticker": "CIA",
+      "shares": 128,
+      "avgPrice": 2.83,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "c54b4e46-9842-4871-aca1-02f4805c4418",
+      "name": "Wallenius Wilhelmsen",
+      "isin": "NO0010571680",
+      "ticker": "WAWI",
+      "shares": 53,
+      "avgPrice": 6.83,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "c1f4c556-17ae-4b54-8cb6-95c2cef1e7f4",
+      "name": "Equinor",
+      "isin": "NO0010096985",
+      "ticker": "EQNR",
+      "shares": 16,
+      "avgPrice": 22.41,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "6bb9c82c-0238-49da-b408-b6c295248830",
+      "name": "Coterra Energy",
+      "isin": "US1270971039",
+      "ticker": "CTRA",
+      "shares": 15,
+      "avgPrice": 23.63,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "c678fedb-851c-43ec-ad18-7fb38d2eead3",
+      "name": "NOV",
+      "isin": "US62955J1034",
+      "ticker": "NOV",
+      "shares": 27,
+      "avgPrice": 12.48,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "6bec042e-56bd-437d-9a6f-55638fa74e33",
+      "name": "Canacol Energy",
+      "isin": "CA1348083025",
+      "ticker": "CNEC",
+      "shares": 133,
+      "avgPrice": 2.53,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "ec0f66cc-bf30-46a7-92cc-a13563e60df0",
+      "name": "Evolution Petroleum",
+      "isin": "US30049A1079",
+      "ticker": "EPM",
+      "shares": 80,
+      "avgPrice": 4.17,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "388313b7-c7e0-419d-907d-ad75e2d6bdf8",
+      "name": "NAC Kazatomprom",
+      "isin": "US63253R2013",
+      "ticker": "KAP",
+      "shares": 11,
+      "avgPrice": 30.24,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "9ce32e09-ea46-4d55-a8fd-a940cead816e",
+      "name": "Edison International",
+      "isin": "US2810201077",
+      "ticker": "EIX",
+      "shares": 7,
+      "avgPrice": 46.46,
+      "note": "",
+      "divPaidTotal": 0
+    },
+    {
+      "id": "b599f514-cf16-4b1c-8c03-84c6c557287b",
+      "name": "Helmerich&Payne",
+      "isin": "US4234521015",
+      "ticker": "HPC",
+      "shares": 22,
+      "avgPrice": 14.7,
+      "note": "",
+      "divPaidTotal": 0
+    }
+  ]
+}

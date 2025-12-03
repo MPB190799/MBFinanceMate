@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MBFinanceMate – Portfolio Management</title>
+  <link rel="stylesheet" href="styles.css?v=1">
+</head>
+<body>
+  <noscript>Bitte JavaScript aktivieren – MBFinanceMate benötigt JS.</noscript>
+
+  <!-- Header -->
+  <header class="header">
+    <img class="logo" src="Logo.png" alt="MBFinanceMate Logo"/>
+    <h1>MBFinanceMate</h1>
+  </header>
+
+  <!-- Tabs -->
+  <nav class="tabs container">
+    <button class="tabbtn active" data-tab="portfolio" type="button">Portfolio</button>
+    <button class="tabbtn" data-tab="news" type="button">News &amp; Reports</button>
+    <button class="tabbtn" data-tab="charts" type="button">Charts &amp; Analytics</button>
+    <button class="tabbtn" data-tab="cycles" type="button">Market Cycles</button>
+    <button class="tabbtn" data-tab="dividends" type="button">Dividends</button>
+    <button class="tabbtn" data-tab="sector" type="button">Sector Analysis</button>
+    <button class="tabbtn" data-tab="analyse" type="button">Analyse</button>
+  </nav>
+
+  <!-- CONTENT -->
+  <main class="container">
+    <!-- ===== Portfolio ===== -->
+    <section id="portfolio" class="tabcontent active">
+      <div class="section card">
+        <h3 class="card__title">Portfolio Overview</h3>
+        <div class="summary kpi">
+          <div class="card"><div class="label">Total Portfolio Value</div><div id="portfolio-value-summary" class="value">0.00</div></div>
+          <div class="card"><div class="label">Total Invested</div><div id="total-invested" class="value">0.00</div></div>
+          <div class="card"><div class="label">Total Gain/Loss</div><div id="total-gain-loss" class="value">0.00</div></div>
+          <div class="card"><div class="label">Ø YOC</div><div id="average-yoc" class="value">0.00%</div></div>
+        </div>
+      </div>
+
+      <div class="section card">
+        <h3 class="card__title">Add Position</h3>
+        <form id="stock-form" class="upload-controls" onsubmit="addPos();return false;">
+          <label>Name</label><input id="f-name" class="input" type="text"/>
+          <label>ISIN</label><input id="f-isin" class="input" type="text"/>
+          <label>Ticker</label><input id="f-ticker" class="input" type="text"/>
+          <label>Shares</label><input id="f-shares" class="input" type="number" step="any" required/>
+          <label>Purchase Price (€)</label><input id="f-pp" class="input" type="number" step="any" required/>
+          <label>Dividend (€/sh)</label><input id="f-divps" class="input" type="number" step="any"/>
+          <label>Current Price (€)</label><input id="f-price" class="input" type="number" step="any"/>
+          <button class="btn" type="submit">Add Position</button>
+        </form>
+      </div>
+
+      <div class="section card">
+        <h3 class="card__title">Your Portfolio</h3>
+        <table id="portfolio-table" class="portfolio-table table" aria-label="Portfolio Table">
+          <thead>
+            <tr>
+              <th>Name</th><th>ISIN</th><th>Ticker</th><th>Shares</th>
+              <th>Purchase Price</th><th>Current Price</th>
+              <th>Dividend (€/sh)</th><th>YOC (%)</th>
+              <th>Invested (€)</th><th>Value (€)</th><th>Gain/Loss (€)</th><th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="portfolio-body"></tbody>
+        </table>
+        <canvas id="allocationChart" class="chart chart--tall mt-md"></canvas>
+      </div>
+    </section>
+
+ <!-- ===== News ===== -->
+<section id="News" class="tabcontent">
+  <div class="card">
+    <h2 class="card__title">News &amp; Reports</h2>
+    <div id="news-container">
+      <div class="skel" style="height:18px;"></div>
+      <div class="skel" style="height:18px; width:80%;"></div>
+      <div class="skel" style="height:18px; width:60%;"></div>
+    </div>
+  </div>
+</section>
+
+
+    <!-- ===== Market Cycles ===== -->
+    <section id="cycles" class="tabcontent">
+      <h3>📊 Aktuelle Marktzyklen</h3>
+
+      <div class="section">
+        <h4>📉 Makroindikatoren (live)</h4>
+        <div class="info-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:8px">
+          <div class="info-box">💸 <strong>Inflation (YoY):</strong> <span id="macro-cpi">–</span></div>
+          <div class="info-box">💵 <strong>M2 (YoY):</strong> <span id="macro-m2">–</span></div>
+          <div class="info-box">🧾 <strong>UST 2Y:</strong> <span id="macro-ust2y">–</span></div>
+          <div class="info-box">📜 <strong>UST 10Y:</strong> <span id="macro-ust10y">–</span></div>
+          <div class="info-box">🪙 <strong>10Y–2Y:</strong> <span id="macro-spread">–</span></div>
+        </div>
+        <div id="macro-note" class="info-box" style="font-size:12px;color:#888">Lade Makrodaten…</div>
+      </div>
+
+      <div class="section">
+        <h4>🛢️ Rohstoffe / Edelmetalle</h4>
+        <div class="info-box">WTI (USO): <strong id="mc-uso-now">–</strong> • 1T: <span id="mc-uso-d1">–</span> • 1M: <span id="mc-uso-d30">–</span> • 3M: <span id="mc-uso-d90">–</span></div>
+        <div class="info-box">Brent (BNO): <strong id="mc-bno-now">–</strong> • 1T: <span id="mc-bno-d1">–</span> • 1M: <span id="mc-bno-d30">–</span> • 3M: <span id="mc-bno-d90">–</span></div>
+        <div class="info-box">Rohstoffe (DBC): <strong id="mc-dbc-now">–</strong> • 1T: <span id="mc-dbc-d1">–</span> • 1M: <span id="mc-dbc-d30">–</span> • 3M: <span id="mc-dbc-d90">–</span></div>
+        <div class="info-box">Gold (GLD): <strong id="mc-gld-now">–</strong> • 1T: <span id="mc-gld-d1">–</span> • 1M: <span id="mc-gld-d30">–</span> • 3M: <span id="mc-gld-d90">–</span></div>
+        <div class="info-box">Kupfer (CPER): <strong id="mc-cper-now">–</strong> • 1T: <span id="mc-cper-d1">–</span> • 1M: <span id="mc-cper-d30">–</span> • 3M: <span id="mc-cper-d90">–</span></div>
+      </div>
+
+      <div class="section">
+        <h4>🚢 Shipping &amp; Proxys</h4>
+        <div class="info-box">Dry Bulk (BDRY): <strong id="mc-bdry-now">–</strong> • 1T: <span id="mc-bdry-d1">–</span> • 1M: <span id="mc-bdry-d30">–</span> • 3M: <span id="mc-bdry-d90">–</span></div>
+        <div class="info-box">Global Shipping (SEA): <strong id="mc-sea-now">–</strong> • 1T: <span id="mc-sea-d1">–</span> • 1M: <span id="mc-sea-d30">–</span> • 3M: <span id="mc-sea-d90">–</span></div>
+        <div class="info-box">LNG (FLNG): <strong id="mc-flng-now">–</strong> • 1T: <span id="mc-flng-d1">–</span> • 1M: <span id="mc-flng-d30">–</span> • 3M: <span id="mc-flng-d90">–</span></div>
+        <div class="info-box">Dry Bulk (GOGL): <strong id="mc-gogl-now">–</strong> • 1T: <span id="mc-gogl-d1">–</span> • 1M: <span id="mc-gogl-d30">–</span> • 3M: <span id="mc-gogl-d90">–</span></div>
+        <div class="info-box">Container (ZIM): <strong id="mc-zim-now">–</strong> • 1T: <span id="mc-zim-d1">–</span> • 1M: <span id="mc-zim-d30">–</span> • 3M: <span id="mc-zim-d90">–</span></div>
+      </div>
+
+      <div class="section">
+        <h4>🔁 SPDR Sektoren</h4>
+        <table class="portfolio-table" style="table-layout:auto">
+          <thead><tr><th>Sektor</th><th>Kurs</th><th>1T</th><th>1M</th><th>3M</th><th>Trend</th></tr></thead>
+          <tbody id="mc-sectors">
+            <tr><td>Tech (XLK)</td><td id="mc-XLK-now">–</td><td id="mc-XLK-d1">–</td><td id="mc-XLK-d30">–</td><td id="mc-XLK-d90">–</td><td id="mc-XLK-view">–</td></tr>
+            <tr><td>Energy (XLE)</td><td id="mc-XLE-now">–</td><td id="mc-XLE-d1">–</td><td id="mc-XLE-d30">–</td><td id="mc-XLE-d90">–</td><td id="mc-XLE-view">–</td></tr>
+            <tr><td>Financials (XLF)</td><td id="mc-XLF-now">–</td><td id="mc-XLF-d1">–</td><td id="mc-XLF-d30">–</td><td id="mc-XLF-d90">–</td><td id="mc-XLF-view">–</td></tr>
+            <tr><td>Industrials (XLI)</td><td id="mc-XLI-now">–</td><td id="mc-XLI-d1">–</td><td id="mc-XLI-d30">–</td><td id="mc-XLI-d90">–</td><td id="mc-XLI-view">–</td></tr>
+            <tr><td>Materials (XLB)</td><td id="mc-XLB-now">–</td><td id="mc-XLB-d1">–</td><td id="mc-XLB-d30">–</td><td id="mc-XLB-d90">–</td><td id="mc-XLB-view">–</td></tr>
+            <tr><td>Staples (XLP)</td><td id="mc-XLP-now">–</td><td id="mc-XLP-d1">–</td><td id="mc-XLP-d30">–</td><td id="mc-XLP-d90">–</td><td id="mc-XLP-view">–</td></tr>
+            <tr><td>Discretionary (XLY)</td><td id="mc-XLY-now">–</td><td id="mc-XLY-d1">–</td><td id="mc-XLY-d30">–</td><td id="mc-XLY-d90">–</td><td id="mc-XLY-view">–</td></tr>
+            <tr><td>Health (XLV)</td><td id="mc-XLV-now">–</td><td id="mc-XLV-d1">–</td><td id="mc-XLV-d30">–</td><td id="mc-XLV-d90">–</td><td id="mc-XLV-view">–</td></tr>
+            <tr><td>Utilities (XLU)</td><td id="mc-XLU-now">–</td><td id="mc-XLU-d1">–</td><td id="mc-XLU-d30">–</td><td id="mc-XLU-d90">–</td><td id="mc-XLU-view">–</td></tr>
+            <tr><td>REITs (IYR)</td><td id="mc-IYR-now">–</td><td id="mc-IYR-d1">–</td><td id="mc-IYR-d30">–</td><td id="mc-IYR-d90">–</td><td id="mc-IYR-view">–</td></tr>
+          </tbody>
+        </table>
+        <div id="mc-rotation-note" class="info-box">Lade Sektordaten…</div>
+      </div>
+
+      <div class="section">
+        <h4>🧭 Lager &amp; Fracht</h4>
+        <div id="inventories-freight-box" class="info-box">Lade Bestände &amp; Frachtraten…</div>
+      </div>
+    </section>
+
+    <!-- ===== Dividends ===== -->
+    <section id="dividends" class="tabcontent">
+      <h3>Dividendenkalender &amp; Forecast</h3>
+      <div id="dividendOverview" class="section card"></div>
+      <div class="progress">
+        <div id="progressBar" class="progress__bar" style="width:0%">0%</div>
+      </div>
+      <p>Ø Monatsdividende: <strong id="avgMonthly">0.00 €</strong></p>
+      <canvas id="dividendChart" class="chart chart--tall"></canvas>
+    </section>
+
+    <!-- ===== Sector Analysis (dynamisch) ===== -->
+    <section id="sector" class="tabcontent">
+      <h3>🔁 Sektorrotation – Einschätzungen</h3>
+      <table class="portfolio-table" style="table-layout:auto">
+        <thead>
+          <tr><th>Sektor</th><th>Kurs</th><th>1T</th><th>1M</th><th>3M</th><th>Trend</th><th>Einschätzung</th></tr>
+        </thead>
+        <tbody id="sector-body"></tbody>
+      </table>
+      <div id="sector-note" class="info-box">Lade Sektordaten…</div>
+    </section>
+    <!-- ===== Analyse ===== -->
+    <section id="analyse" class="tabcontent">
+      <h3>Makro-Analyse</h3>
+      <div id="analyse-container" class="section card">
+        <p>Lade Analyse…</p>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== SCRIPTS ===== -->
+  <script src="/portfolio.js" defer></script>
+
+  <!-- Inline Script -->
+  <script>
+  (() => {
+    // Tabs
+    document.addEventListener('click', (e) => {
+      const btn = e.target.closest('.tabbtn'); if (!btn) return;
+      const tabId = btn.dataset.tab;
+      document.querySelectorAll('.tabbtn').forEach(b => b.classList.toggle('active', b===btn));
+      document.querySelectorAll('.tabcontent').forEach(sec => sec.classList.toggle('active', sec.id===tabId));
+      if (tabId === 'sector')   setTimeout(loadSectorAnalysis, 0);
+      if (tabId === 'news')     setTimeout(loadNews, 0);
+      if (tabId === 'cycles')   setTimeout(loadMarketCycles, 0);
+      if (tabId === 'dividends')setTimeout(loadDividends, 0);
+      if (tabId === 'analyse')  setTimeout(loadAnalyse, 0);
+    });
+
+    // Helpers
+    const setTxt=(id,v)=>{const el=document.getElementById(id); if(el) el.textContent=String(v);};
+    const fmtNum=(x,d=2)=>(x==null||isNaN(x))?'–':Number(x).toFixed(d);
+    const fmtPct=(x)=> (x==null||isNaN(x)) ? '–' : `${x>0?'+':''}${Number(x).toFixed(2)}%`;
+    const fmtPrice=(x)=> x==null || isNaN(x) ? '–' : (Number(x)>=1000?Number(x).toFixed(0):Number(x).toFixed(2));
+
+    // ==== NEWS ====
+    function renderNewsCard(n){
+      const card=document.createElement('div'); card.className='news-card';
+      const t = `${n.title||''} ${n.description||n.summary||''}`;
+      const badges=[];
+      if (/(dividend|distribution|sonderdividende)/i.test(t)) badges.push('div');
+      if (/(earnings|eps|revenue|results|quarter|q[1-4])/i.test(t)) badges.push('earn');
+      if (/(merger|acquisition|spin[- ]?off|buyout)/i.test(t)) badges.push('ma');
+
+      card.innerHTML=`
+        <div class="news-header">
+          <h4 class="news-title">${n.title||'—'}</h4>
+          <div class="news-meta"><span>${n.published_utc ? new Date(n.published_utc).toLocaleString() : ''}</span></div>
+        </div>
+        <div class="news-badges">${badges.map(b=>`<span class="badge ${b}">${b.toUpperCase()}</span>`).join('')}</div>
+        <div class="news-body" style="display:none;">
+          <p>${n.description||n.summary||''}</p>
+          ${n.article_url?`<a class="link-icon" href="${n.article_url}" target="_blank" rel="noopener">🔗 Quelle</a>`:''}
+        </div>
+        <div class="news-actions"><button class="expand-btn" type="button">Mehr anzeigen</button></div>`;
+      card.querySelector('.expand-btn').addEventListener('click', (e)=>{
+        const body=card.querySelector('.news-body'); const vis=body.style.display==='block';
+        body.style.display=vis?'none':'block'; e.currentTarget.textContent=vis?'Mehr anzeigen':'Weniger anzeigen';
+      });
+      return card;
+    }
+
+    async function loadNews(){
+      const cont=document.getElementById('news-container'); if(!cont) return;
+      cont.innerHTML='<p>Lade News…</p>';
+      try{
+        const raw = document.getElementById('news-tickers')?.value || '';
+        let tickers = raw.split(',').map(s=>s.trim().toUpperCase()).filter(Boolean);
+
+        if (!tickers.length) {
+          const resp = await fetch('/api/news/portfolio');
+          const j = await resp.json();
+          tickers = []; // server liefert direkt Items
+          let items = j?.items || [];
+          cont.innerHTML='';
+          items.slice(0, Number(document.getElementById('news-limit')?.value || 20))
+            .forEach(n => cont.appendChild(renderNewsCard(n)));
+          return;
+        }
+
+        const limit = Number(document.getElementById('news-limit')?.value || 20);
+        const resp = await fetch(`/api/news?tickers=${encodeURIComponent(tickers.join(','))}&limit=${limit}`);
+        const j = await resp.json();
+        let items = j?.items || [];
+        cont.innerHTML='';
+        items.slice(0, limit).forEach(n => cont.appendChild(renderNewsCard(n)));
+      }catch(e){
+        cont.innerHTML = `<div class="info-box">News Fehler: ${e.message||e}</div>`;
+      }
+    }
+    document.getElementById('news-refresh')?.addEventListener('click', loadNews);
+
+    // ==== DIVIDENDS ====
+    async function loadDividends(){
+      const host=document.getElementById('dividendOverview'); if(!host) return;
+      host.innerHTML='<p>Lade Dividenden…</p>';
+      try{
+        const r=await fetch('/api/dividend-calendar'); const j=await r.json();
+        const items=j?.items||[];
+        if(!items.length){ host.innerHTML='<p>Keine kommenden Dividenden gefunden.</p>'; return; }
+        let html='<table class="portfolio-table"><thead><tr><th>Ticker</th><th>Ex-Date</th><th>Pay-Date</th><th>Betrag</th></tr></thead><tbody>';
+        items.forEach(d=>{
+          html+=`<tr><td>${d.ticker}</td><td>${d.exDate}</td><td>${d.payDate||''}</td><td>${d.amount||''}</td></tr>`;
+        });
+        html+='</tbody></table>';
+        host.innerHTML=html;
+      }catch(e){ host.innerHTML=`<p>Fehler: ${e.message||e}</p>`; }
+    }
+
+    // ==== ANALYSE ====
+    async function loadAnalyse(){
+      const cont=document.getElementById('analyse-container'); if(!cont) return;
+      cont.innerHTML='<p>Lade Analyse…</p>';
+      try{
+        const r=await fetch('/api/macro/summary'); const j=await r.json();
+        let txt='';
+        txt+=`📉 Treasury 2y/10y Spread: ${j?.treasury?.spread??'–'}%\n`;
+        txt+=`💸 Inflation (CPI YoY): ${j?.cpi?.yoy??'–'}%\n`;
+        txt+=`💵 M2 YoY: ${j?.m2?.yoy??'–'}%\n`;
+        txt+=`📊 VIX: ${j?.vix?.value??'–'}\n`;
+        txt+=`🧭 Bewertung: ${j?.recessionRisk||'–'}`;
+        cont.innerHTML=`<pre>${txt}</pre>`;
+      }catch(e){ cont.innerHTML=`<p>Analyse Fehler: ${e.message||e}</p>`; }
+    }
+
+    // ==== Bootstrap ====
+    document.addEventListener('DOMContentLoaded', ()=>{
+      loadNews();
+      loadDividends();
+      loadAnalyse();
+    });
+  })();
+  </script>
+</body>
+</html>

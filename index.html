@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MBFinanceMate – Dashboard</title>
+
+  <!-- Styles & Favicon liegen direkt in /public -->
+  <link rel="stylesheet" href="styles.css?v=1" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+  <noscript>Bitte JavaScript aktivieren – MBFinanceMate benötigt JS.</noscript>
+
+  <!-- ===== Header ===== -->
+  <header class="header">
+    <img class="logo" src="Logo.png" alt="MBFinanceMate Logo" />
+    <h1>MBFinanceMate</h1>
+  </header>
+
+  <!-- ===== Tabs ===== -->
+  <nav class="tabs container">
+    <button class="tabbtn active" data-tab="portfolio" type="button">Portfolio</button>
+    <button class="tabbtn" data-tab="news" type="button">News &amp; Reports</button>
+    <button class="tabbtn" data-tab="charts" type="button">Charts &amp; Analytics</button>
+    <button class="tabbtn" data-tab="cycles" type="button">Market Cycles</button>
+    <button class="tabbtn" data-tab="dividends" type="button">Dividends</button>
+    <button class="tabbtn" data-tab="sector" type="button">Sector Analysis</button>
+    <button class="tabbtn" data-tab="analyse" type="button">Analyse</button>
+  </nav>
+
+  <!-- ===== Dynamischer Content ===== -->
+  <main id="content" class="container">
+    <!-- Hier lädt tabs.js die Seiten aus /pages/*.html -->
+  </main>
+
+  <!-- ===== Scripts ===== -->
+  <!-- Dein bestehendes Portfolio-Frontend -->
+  <script src="/portfolio.js" defer></script>
+
+  <!-- News / Sektoren / Zyklen / Dividenden / Analyse -->
+  <script src="/news.js" defer></script>
+  <script src="/sector.js" defer></script>
+  <script src="/dividends.js" defer></script>
+  <script src="/cycles.js" defer></script>
+  <script src="/analyse.js" defer></script>
+
+  <!-- Tab-Controller (muss nach den anderen geladen werden) -->
+  <script src="/tabs.js" defer></script>
+</body>
+</html>

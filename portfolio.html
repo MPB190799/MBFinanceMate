@@ -1,0 +1,55 @@
+<section id="portfolio" class="tabcontent active">
+
+  <div class="section card">
+    <h3 class="card__title">Portfolio Overview</h3>
+    <div class="summary kpi">
+      <div class="card">
+        <div class="label">Total Portfolio Value</div>
+        <div id="portfolio-value-summary" class="value">0.00</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Invested</div>
+        <div id="total-invested" class="value">0.00</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Gain/Loss</div>
+        <div id="total-gain-loss" class="value">0.00</div>
+      </div>
+      <div class="card">
+        <div class="label">Ø YOC</div>
+        <div id="average-yoc" class="value">0.00%</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section card">
+    <h3 class="card__title">Add Position</h3>
+    <form id="stock-form" class="upload-controls" onsubmit="addPos();return false;">
+      <label>Name</label><input id="f-name" class="input" type="text" />
+      <label>ISIN</label><input id="f-isin" class="input" type="text" />
+      <label>Ticker</label><input id="f-ticker" class="input" type="text" />
+      <label>Shares</label><input id="f-shares" class="input" type="number" step="any" required />
+      <label>Purchase Price (€)</label><input id="f-pp" class="input" type="number" step="any" required />
+      <label>Dividend (€/sh)</label><input id="f-divps" class="input" type="number" step="any" />
+      <label>Current Price (€)</label><input id="f-price" class="input" type="number" step="any" />
+      <button class="btn" type="submit">Add Position</button>
+    </form>
+  </div>
+
+  <div class="section card">
+    <h3 class="card__title">Your Portfolio</h3>
+    <table id="portfolio-table" class="portfolio-table table">
+      <thead>
+        <tr>
+          <th>Name</th><th>ISIN</th><th>Ticker</th><th>Shares</th>
+          <th>Purchase Price</th><th>Current Price</th>
+          <th>Dividend (€/sh)</th><th>YOC (%)</th>
+          <th>Invested (€)</th><th>Value (€)</th><th>Gain/Loss (€)</th><th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="portfolio-body"></tbody>
+    </table>
+    <canvas id="allocationChart" class="chart chart--tall mt-md"></canvas>
+  </div>
+
+</section>
