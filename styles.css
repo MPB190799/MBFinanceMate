@@ -302,10 +302,6 @@ tbody tr:hover{ background:rgba(212,175,55,.06) }
 .macro-neutral {
   color: var(--text-1) !important;
 }
-
-
-   ...
-}
 /* ===== Trend Icons ===== */
 .macro-trend {
   font-size: 1.2rem;
