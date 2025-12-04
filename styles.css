@@ -251,6 +251,58 @@ tbody tr:hover{ background:rgba(212,175,55,.06) }
 /* ... letzter vorhandener CSS-Block ... */
 
 /* ===== Makro-Analyse Dashboard ===== */
+
 .macro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.macro-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.06)), var(--bg-1);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-1);
+  transition: 0.2s ease;
+}
+
+.macro-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(212,175,55,.25);
+}
+
+.macro-card h4 {
+  margin: 0 0 6px;
+  color: var(--text-0);
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.macro-value {
+  font-size: 1.8rem;
+  font-weight: 800;
+  color: var(--gold-strong);
+  margin: 4px 0 2px;
+}
+
+.macro-note {
+  font-size: 0.85rem;
+  color: var(--text-2);
+}
+
+/* optionale JS-Farbklassen */
+.macro-pos {
+  color: var(--success) !important;
+}
+.macro-neg {
+  color: var(--danger) !important;
+}
+.macro-neutral {
+  color: var(--text-1) !important;
+}
+
+
    ...
 }
