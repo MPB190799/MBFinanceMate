@@ -336,4 +336,39 @@ tbody tr:hover{ background:rgba(212,175,55,.06) }
   color: var(--text-1);
   line-height: 1.5;
 }
+/* ===== Market Cycles – Trend & Bewertung ===== */
+
+.mc-up { color: var(--success); font-weight: 700; }
+.mc-down { color: var(--danger); font-weight: 700; }
+.mc-flat { color: var(--text-2); font-weight: 700; }
+
+.mc-trend {
+  margin-left: 4px;
+  font-size: 1.1rem;
+  font-weight: 900;
+}
+
+.mc-badge {
+  display:inline-block;
+  padding:4px 10px;
+  border-radius:8px;
+  font-weight:700;
+  font-size:0.85rem;
+  margin-top:6px;
+}
+
+.mc-bull { background:#1b5e20; color:#fff; }
+.mc-bear { background:#7f0000; color:#fff; }
+.mc-mixed { background:#555; color:#fff; }
+
+#mc-summary-box {
+  margin-top:16px;
+  padding:14px;
+  border-radius:var(--radius-lg);
+  background:var(--bg-1);
+  border:var(--border);
+  box-shadow:var(--shadow-1);
+  line-height:1.6;
+  color:var(--text-1);
+}
 
