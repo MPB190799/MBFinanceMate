@@ -4,28 +4,35 @@
   <div class="section card">
     <h3 class="card__title">Portfolio Overview</h3>
     <div class="summary kpi">
+
       <div class="card">
         <div class="label">Total Portfolio Value</div>
-        <div id="portfolio-value-summary" class="value">0.00</div>
+        <div id="portfolio-value-summary" class="value">0.00 €</div>
       </div>
+
       <div class="card">
         <div class="label">Total Invested</div>
-        <div id="total-invested" class="value">0.00</div>
+        <div id="total-invested" class="value">0.00 €</div>
       </div>
+
       <div class="card">
         <div class="label">Total Gain/Loss</div>
         <div id="total-gain-loss" class="value">0.00</div>
       </div>
+
       <div class="card">
         <div class="label">Ø YOC</div>
         <div id="average-yoc" class="value">0.00%</div>
       </div>
+
       <div class="card">
         <div class="label">Yearly Dividend Income</div>
         <div id="total-dividend-income" class="value">0.00 €</div>
       </div>
+
     </div>
   </div>
+
 
   <!-- ADD POSITION -->
   <div class="section card">
@@ -47,15 +54,14 @@
       <label>Purchase Price (€)</label>
       <input id="f-pp" class="input" type="number" step="any" required />
 
-      <label>Dividend (€/sh)</label>
-      <input id="f-divps" class="input" type="number" step="any" placeholder="0.00" />
-
-      <label>Current Price (€)</label>
-      <input id="f-price" class="input" type="number" step="any" />
+      <label>Dividende erhalten (gesamt €)</label>
+      <input id="f-divpaid" class="input" type="number" placeholder="optional">
 
       <button class="btn btn--gold" type="submit">Add Position</button>
+
     </form>
   </div>
+
 
   <!-- PORTFOLIO TABLE -->
   <div class="section card">
@@ -71,7 +77,8 @@
           <th>Purchase Price</th>
           <th>Current Price</th>
           <th>Dividend (€/sh)</th>
-          <th>YOC (%)</th>
+          <th>Official Yield</th>
+          <th>Your YOC</th>
           <th>Annual Div (€)</th>
           <th>Invested (€)</th>
           <th>Value (€)</th>
@@ -79,15 +86,18 @@
           <th>Action</th>
         </tr>
       </thead>
+
       <tbody id="portfolio-body"></tbody>
     </table>
 
     <canvas id="allocationChart" class="chart chart--tall mt-md"></canvas>
   </div>
 
-  <!-- EDIT POPUP (unsichtbar bis genutzt) -->
+
+  <!-- EDIT POPUP -->
   <div id="edit-modal" class="modal hidden">
     <div class="modal-content card">
+
       <h3 class="card__title">Edit Position</h3>
 
       <label>Name</label>
@@ -99,16 +109,14 @@
       <label>Purchase Price</label>
       <input id="e-pp" class="input" type="number" step="any">
 
-      <label>Dividend (€/sh)</label>
-      <input id="e-divps" class="input" type="number" step="any">
-
-      <label>Current Price</label>
-      <input id="e-price" class="input" type="number" step="any">
+      <label>Dividende erhalten (gesamt €)</label>
+      <input id="e-divpaid" class="input" type="number">
 
       <div class="modal-actions">
         <button class="btn" onclick="closeEdit()">Cancel</button>
         <button class="btn btn--gold" onclick="saveEdit()">Save</button>
       </div>
+
     </div>
   </div>
 
