@@ -247,3 +247,10 @@ tbody tr:hover{ background:rgba(212,175,55,.06) }
 @media (prefers-reduced-motion: reduce){
   *{ animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; }
 }
+/* ===== Inventories Icons etc. */
+/* ... letzter vorhandener CSS-Block ... */
+
+/* ===== Makro-Analyse Dashboard ===== */
+.macro-grid {
+   ...
+}
