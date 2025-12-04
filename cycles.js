@@ -1,151 +1,183 @@
-// cycles.js – Market Cycles + Inventories & Freight
+// cycles.js – Premium Market Cycles (Trend, Bewertung, Fazit)
 
 (function () {
-  // kleine Helper
-  const setTxt = (id, v) => {
-    const el = document.getElementById(id);
-    if (el) el.textContent = String(v);
-  };
 
-  // ================= MARKET CYCLES =================
+  // Trendpfeil generieren
+  function trendArrow(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return `<span class="mc-trend mc-flat">→</span>`;
+    if (n > 0) return `<span class="mc-trend mc-up">↑</span>`;
+    if (n < 0) return `<span class="mc-trend mc-down">↓</span>`;
+    return `<span class="mc-trend mc-flat">→</span>`;
+  }
 
+  // Zahl einfärben
+  function colorize(v) {
+    const n = Number(v);
+    if (!isFinite(n)) return `<span class="mc-flat">–</span>`;
+    if (n > 0) return `<span class="mc-up">${n.toFixed(2)}%</span>`;
+    if (n < 0) return `<span class="mc-down">${n.toFixed(2)}%</span>`;
+    return `<span class="mc-flat">${n.toFixed(2)}%</span>`;
+  }
+
+  // Bewertung Bull/Bear
+  function assessCategory(values) {
+    let score = 0;
+    values.forEach(v => {
+      const n = Number(v);
+      if (!isFinite(n)) return;
+      if (n > 0) score++;
+      if (n < 0) score--;
+    });
+    if (score >= 2) return `<span class="mc-badge mc-bull">Bullish</span>`;
+    if (score <= -2) return `<span class="mc-badge mc-bear">Bearish</span>`;
+    return `<span class="mc-badge mc-mixed">Mixed</span>`;
+  }
+
+  // Fazit generieren
+  function finalSummary(riskScore) {
+    if (riskScore >= 2)
+      return "<strong>📈 Marktregime: Risk-On – Liquidität verbessert sich, Cyclicals stabil.</strong>";
+
+    if (riskScore <= -2)
+      return "<strong>📉 Marktregime: Risk-Off – Defensive Sektoren bevorzugt, Makro fragil.</strong>";
+
+    return "<strong>⚖️ Marktregime: Mixed – Übergangsphase, selektives Stock-Picking.</strong>";
+  }
+
+  // Hauptfunktion: Market Cycles laden
   window.loadMarketCycles = async function () {
-    const note = document.getElementById("mc-rotation-note");
-    if (note) note.textContent = "Lade Market Cycles…";
-
     try {
-      const r = await fetch("/api/cycles");
+      const r = await fetch("/api/market-cycles");
       const j = await r.json();
 
-      // Rohstoffe / Proxys
-      const map = {
-        USO: "uso",
-        BNO: "bno",
-        DBC: "dbc",
-        GLD: "gld",
-        CPER: "cper",
-        BDRY: "bdry",
-        SEA: "sea",
-        FLNG: "flng",
-        GOGL: "gogl",
-        ZIM: "zim",
-      };
+      let riskScore = 0; // Für späteres globales Fazit
 
-      for (const [group, tickers] of Object.entries(j || {})) {
-        if (!tickers || typeof tickers !== "object") continue;
-        for (const [t, obj] of Object.entries(tickers)) {
-          const key = map[t];
-          if (!key || !obj) continue;
-          setTxt(`mc-${key}-now`, obj.price ?? "–");
-          setTxt(`mc-${key}-d1`, obj["1T"] ?? "–");
-          setTxt(`mc-${key}-d30`, obj["1M"] ?? "–");
-          setTxt(`mc-${key}-d90`, obj["3M"] ?? "–");
-        }
+      /* ================================
+         MAKRO
+      ================================== */
+
+      const cpi = j?.macro?.cpi;
+      const m2 = j?.macro?.m2;
+      const ust2 = j?.macro?.ust2y;
+      const ust10 = j?.macro?.ust10y;
+      const spread = j?.macro?.spread;
+
+      document.getElementById("macro-cpi").innerHTML = colorize(cpi) + trendArrow(cpi);
+      document.getElementById("macro-m2").innerHTML = colorize(m2) + trendArrow(m2);
+      document.getElementById("macro-ust2y").innerHTML = ust2 ?? "–";
+      document.getElementById("macro-ust10y").innerHTML = ust10 ?? "–";
+      document.getElementById("macro-spread").innerHTML = colorize(spread) + trendArrow(spread);
+
+      let macroEval = assessCategory([m2, -Math.abs(spread)]); // invertierte Kurve = Risiko
+      document.getElementById("macro-note").innerHTML = "Makro-Signal: " + macroEval;
+
+      if (spread < 0) riskScore -= 1;
+      if (m2 < 0) riskScore -= 1;
+      if (cpi < 3) riskScore += 1;
+
+      /* ================================
+         ROHSTOFFE
+      ================================== */
+
+      const commodities = [
+        ["uso", "WTI"],
+        ["bno", "Brent"],
+        ["dbc", "Rohstoffe"],
+        ["gld", "Gold"],
+        ["cper", "Kupfer"]
+      ];
+
+      for (const [key] of commodities) {
+        ["d1", "d30", "d90"].forEach(period => {
+          const el = document.getElementById(`mc-${key}-${period}`);
+          const val = j?.commodities?.[key]?.[period];
+          if (el) el.innerHTML = colorize(val) + trendArrow(val);
+        });
+
+        const nowEl = document.getElementById(`mc-${key}-now`);
+        if (nowEl) nowEl.innerHTML = j?.commodities?.[key]?.now ?? "–";
       }
 
-      // SPDR-Sektoren (liegen meist unter j.sectors)
-      if (j.sectors) {
-        for (const [t, obj] of Object.entries(j.sectors)) {
-          setTxt(`mc-${t}-now`, obj.price ?? "–");
-          setTxt(`mc-${t}-d1`, obj["1T"] ?? "–");
-          setTxt(`mc-${t}-d30`, obj["1M"] ?? "–");
-          setTxt(`mc-${t}-d90`, obj["3M"] ?? "–");
-          setTxt(`mc-${t}-view`, obj.trend ?? "–");
-        }
+      // Rohstoffe bewerten
+      const commVals = [
+        j?.commodities?.uso?.d30,
+        j?.commodities?.dbc?.d30,
+        j?.commodities?.gld?.d30,
+        j?.commodities?.cper?.d30
+      ];
+
+      const commEval = assessCategory(commVals);
+
+      const commBox = document.createElement("div");
+      commBox.innerHTML = "Rohstoff-Signal: " + commEval;
+      document.querySelectorAll(".section")[1].appendChild(commBox);
+
+      if (commVals.filter(v => v > 0).length >= 2) riskScore += 1;
+      if (commVals.filter(v => v < 0).length >= 2) riskScore -= 1;
+
+      /* ================================
+         SHIPPING
+      ================================== */
+
+      const ship = ["bdry", "sea", "flng", "gogl", "zim"];
+
+      ship.forEach(key => {
+        ["d1", "d30", "d90"].forEach(period => {
+          const el = document.getElementById(`mc-${key}-${period}`);
+          const val = j?.shipping?.[key]?.[period];
+          if (el) el.innerHTML = colorize(val) + trendArrow(val);
+        });
+
+        const nowEl = document.getElementById(`mc-${key}-now`);
+        if (nowEl) nowEl.innerHTML = j?.shipping?.[key]?.now ?? "–";
+      });
+
+      const ship30 = ship.map(s => j?.shipping?.[s]?.d30);
+      const shipEval = assessCategory(ship30);
+
+      const shipBox = document.createElement("div");
+      shipBox.innerHTML = "Shipping-Signal: " + shipEval;
+      document.querySelectorAll(".section")[2].appendChild(shipBox);
+
+      if (ship30.filter(v => v > 0).length >= 3) riskScore += 1;
+      if (ship30.filter(v => v < 0).length >= 3) riskScore -= 1;
+
+      /* ================================
+         SPDR SECTORS
+      ================================== */
+
+      const sectors = j?.sectors || {};
+      for (const key in sectors) {
+        const s = sectors[key];
+        if (!s) continue;
+
+        const viewEl = document.getElementById(`mc-${key}-view`);
+        if (!viewEl) continue;
+
+        const score =
+          (s.d1 > 0 ? 1 : s.d1 < 0 ? -1 : 0) +
+          (s.d30 > 0 ? 1 : s.d30 < 0 ? -1 : 0) +
+          (s.d90 > 0 ? 1 : s.d90 < 0 ? -1 : 0);
+
+        if (score >= 2) viewEl.innerHTML = `<span class="mc-badge mc-bull">Bullish</span>`;
+        else if (score <= -2) viewEl.innerHTML = `<span class="mc-badge mc-bear">Bearish</span>`;
+        else viewEl.innerHTML = `<span class="mc-badge mc-mixed">Mixed</span>`;
       }
 
-      // Makro-Daten direkt aus summary ziehen (gleiches Endpoint wie Analyse)
-      try {
-        const mRes = await fetch("/api/macro/summary");
-        const m = await mRes.json();
-        setTxt("macro-cpi", `${m?.cpi?.yoy ?? "–"}%`);
-        setTxt("macro-m2", `${m?.m2?.yoy ?? "–"}%`);
-        setTxt("macro-ust2y", `${m?.treasury?.ust2y ?? "–"}%`);
-        setTxt("macro-ust10y", `${m?.treasury?.ust10y ?? "–"}%`);
-        setTxt("macro-spread", `${m?.treasury?.spread ?? "–"}%`);
-        const noteEl = document.getElementById("macro-note");
-        if (noteEl) noteEl.textContent = m?.macroComment || "Makrodaten geladen.";
-      } catch {
-        /* Makro optional – kein harter Fehler */
-      }
+      /* ================================
+         GLOBAL FAZIT
+      ================================== */
 
-      if (note) note.textContent = "Market Cycles aktualisiert.";
+      const summary = document.createElement("div");
+      summary.id = "mc-summary-box";
+      summary.innerHTML = finalSummary(riskScore);
+
+      document.getElementById("cycles").appendChild(summary);
+
     } catch (e) {
-      if (note) note.textContent = "Fehler beim Laden der Market Cycles.";
+      console.error("Cycles Fehler:", e);
     }
   };
 
-  // ===============  INVENTORIES & FREIGHT  =============
-
-  window.loadInventoriesFreight = async function () {
-    const box = document.getElementById("inventories-freight-box");
-    if (!box) return;
-
-    box.textContent = "Lade Bestände & Frachtraten…";
-
-    const INVENTORY_LABELS = {
-      wti: "WTI",
-      brent: "Brent",
-      crudeProd: "Crude Oil Produktion",
-      crudeStocks: "Crude Oil Lager",
-      gasolineStocks: "Gasoline Lager",
-      distillateStocks: "Destillate Lager",
-      natGasStorage: "Erdgas Lager",
-      henryHub: "Henry Hub Gaspreis",
-    };
-
-    try {
-      const r = await fetch("/api/market-dashboard?tickers=BDRY,SEA,FLNG,ZIM");
-      const j = await r.json();
-
-      let html = `
-        <table class="portfolio-table">
-          <thead>
-            <tr>
-              <th>Typ</th>
-              <th>Aktuell</th>
-              <th>Δ Vorwoche</th>
-              <th>Ø 5J</th>
-              <th>Abw. ggü. 5J</th>
-            </tr>
-          </thead>
-          <tbody>
-      `;
-
-      for (const [k, v] of Object.entries(j.inventories || {})) {
-        const val = v?.value != null ? `${v.value} ${v.unit || ""}` : "—";
-        const chg = v?.change != null ? `${v.change > 0 ? "+" : ""}${v.change} ${v.unit || ""}` : "—";
-        const avg = v?.avg5y != null ? `${v.avg5y} ${v.unit || ""}` : "—";
-        const vs5y =
-          v?.vs5y_pct != null
-            ? `<span class="${v.vs5y_pct > 0 ? "neg" : "pos"}">${v.vs5y_pct}%</span>`
-            : "—";
-
-        html += `
-          <tr>
-            <td>${INVENTORY_LABELS[k] || k}</td>
-            <td><strong>${val}</strong></td>
-            <td>${chg}</td>
-            <td>${avg}</td>
-            <td>${vs5y}</td>
-          </tr>
-        `;
-      }
-
-      for (const [t, data] of Object.entries(j.tickers || {})) {
-        if (!data?.price) continue;
-        html += `
-          <tr>
-            <td>🚢 ${t}</td>
-            <td colspan="4"><strong>${data.price}</strong> USD</td>
-          </tr>
-        `;
-      }
-
-      html += "</tbody></table>";
-      box.innerHTML = html;
-    } catch (e) {
-      box.textContent = "❌ Fehler bei Lager & Fracht: " + (e.message || e);
-    }
-  };
 })();
