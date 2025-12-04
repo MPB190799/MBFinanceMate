@@ -1,6 +1,99 @@
-<section id="charts" class="tabcontent active">
-  <div class="section card">
-    <h3 class="card__title">Charts &amp; Analytics</h3>
-    <p>Hier kannst du später zusätzliche Visualisierungen (z.B. Sektor-Allocation, Dividendengrowth etc.) einbauen.</p>
-  </div>
-</section>
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>Charts &amp; Analytics – MBFinanceMate</title>
+  <link rel="stylesheet" href="/styles.css?v=1">
+</head>
+
+<body>
+
+<header class="header">
+  <img class="logo" src="/Logo.png" alt="MBFinanceMate Logo"/>
+  <h1>MBFinanceMate</h1>
+</header>
+
+<nav class="tabs container">
+  <a class="tabbtn" href="/index.html">Portfolio</a>
+  <a class="tabbtn" href="/pages/news.html">News &amp; Reports</a>
+  <a class="tabbtn active" href="/pages/charts.html">Charts &amp; Analytics</a>
+  <a class="tabbtn" href="/pages/cycles.html">Market Cycles</a>
+  <a class="tabbtn" href="/pages/dividends.html">Dividends</a>
+  <a class="tabbtn" href="/pages/sector.html">Sector Analysis</a>
+  <a class="tabbtn" href="/pages/analyse.html">Analyse</a>
+</nav>
+
+<main class="container">
+
+  <section id="charts" class="tabcontent active">
+
+    <!-- Eingabe -->
+    <div class="section card">
+      <h3 class="card__title">Aktien-Chart &amp; Schnell-Analyse</h3>
+      <form id="chart-form" class="upload-controls">
+        <label for="chart-ticker">Ticker</label>
+        <input id="chart-ticker" class="input" type="text" placeholder="z.B. AAPL, RIO, ENB" />
+        <button id="chart-run" class="btn btn--gold" type="submit">Analysieren</button>
+        <span id="stock-error" style="margin-left:8px;color:#ff5a59;font-size:0.85rem;"></span>
+      </form>
+    </div>
+
+    <!-- Überblick + Bewertung -->
+    <div class="section section-grid">
+      <div class="col-6">
+        <div class="card">
+          <h3 class="card__title">Überblick</h3>
+          <div class="summary">
+            <div>
+              <div class="label">Name</div>
+              <div class="value" id="stock-name">–</div>
+            </div>
+            <div>
+              <div class="label">Ticker</div>
+              <div class="value" id="stock-ticker">–</div>
+            </div>
+            <div>
+              <div class="label">Kurs</div>
+              <div class="value" id="stock-price">–</div>
+            </div>
+            <div>
+              <div class="label">Tagesspanne</div>
+              <div class="value" id="stock-day-range">–</div>
+            </div>
+            <div>
+              <div class="label">Volumen</div>
+              <div class="value" id="stock-volume">–</div>
+            </div>
+            <div>
+              <div class="label">VWAP</div>
+              <div class="value" id="stock-vw">–</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-6">
+        <div class="card">
+          <h3 class="card__title">Bewertung &amp; Trend (Intraday)</h3>
+          <div id="stock-rating-badge" class="rating-badge rating-neutral">NEUTRAL</div>
+          <p id="stock-rating-text" style="margin-top:10px;">
+            Gib einen Ticker ein, um eine erste Intraday-Einschätzung zu bekommen.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div class="section card">
+      <h3 class="card__title">Preis-Chart (Intraday-Spanne)</h3>
+      <canvas id="priceChart" class="chart chart--tall"></canvas>
+    </div>
+
+  </section>
+
+</main>
+
+<script src="/charts.js" defer></script>
+</body>
+</html>
