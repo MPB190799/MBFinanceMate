@@ -1,5 +1,6 @@
 <section id="portfolio" class="tabcontent active">
 
+  <!-- PORTFOLIO SUMMARY -->
   <div class="section card">
     <h3 class="card__title">Portfolio Overview</h3>
     <div class="summary kpi">
@@ -19,37 +20,96 @@
         <div class="label">Ø YOC</div>
         <div id="average-yoc" class="value">0.00%</div>
       </div>
+      <div class="card">
+        <div class="label">Yearly Dividend Income</div>
+        <div id="total-dividend-income" class="value">0.00 €</div>
+      </div>
     </div>
   </div>
 
+  <!-- ADD POSITION -->
   <div class="section card">
     <h3 class="card__title">Add Position</h3>
     <form id="stock-form" class="upload-controls" onsubmit="addPos();return false;">
-      <label>Name</label><input id="f-name" class="input" type="text" />
-      <label>ISIN</label><input id="f-isin" class="input" type="text" />
-      <label>Ticker</label><input id="f-ticker" class="input" type="text" />
-      <label>Shares</label><input id="f-shares" class="input" type="number" step="any" required />
-      <label>Purchase Price (€)</label><input id="f-pp" class="input" type="number" step="any" required />
-      <label>Dividend (€/sh)</label><input id="f-divps" class="input" type="number" step="any" />
-      <label>Current Price (€)</label><input id="f-price" class="input" type="number" step="any" />
-      <button class="btn" type="submit">Add Position</button>
+
+      <label>Name</label>
+      <input id="f-name" class="input" type="text" />
+
+      <label>ISIN</label>
+      <input id="f-isin" class="input" type="text" />
+
+      <label>Ticker</label>
+      <input id="f-ticker" class="input" type="text" />
+
+      <label>Shares</label>
+      <input id="f-shares" class="input" type="number" step="any" required />
+
+      <label>Purchase Price (€)</label>
+      <input id="f-pp" class="input" type="number" step="any" required />
+
+      <label>Dividend (€/sh)</label>
+      <input id="f-divps" class="input" type="number" step="any" placeholder="0.00" />
+
+      <label>Current Price (€)</label>
+      <input id="f-price" class="input" type="number" step="any" />
+
+      <button class="btn btn--gold" type="submit">Add Position</button>
     </form>
   </div>
 
+  <!-- PORTFOLIO TABLE -->
   <div class="section card">
     <h3 class="card__title">Your Portfolio</h3>
+
     <table id="portfolio-table" class="portfolio-table table">
       <thead>
         <tr>
-          <th>Name</th><th>ISIN</th><th>Ticker</th><th>Shares</th>
-          <th>Purchase Price</th><th>Current Price</th>
-          <th>Dividend (€/sh)</th><th>YOC (%)</th>
-          <th>Invested (€)</th><th>Value (€)</th><th>Gain/Loss (€)</th><th>Action</th>
+          <th>Name</th>
+          <th>ISIN</th>
+          <th>Ticker</th>
+          <th>Shares</th>
+          <th>Purchase Price</th>
+          <th>Current Price</th>
+          <th>Dividend (€/sh)</th>
+          <th>YOC (%)</th>
+          <th>Annual Div (€)</th>
+          <th>Invested (€)</th>
+          <th>Value (€)</th>
+          <th>Gain/Loss (€)</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody id="portfolio-body"></tbody>
     </table>
+
     <canvas id="allocationChart" class="chart chart--tall mt-md"></canvas>
+  </div>
+
+  <!-- EDIT POPUP (unsichtbar bis genutzt) -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content card">
+      <h3 class="card__title">Edit Position</h3>
+
+      <label>Name</label>
+      <input id="e-name" class="input" type="text">
+
+      <label>Shares</label>
+      <input id="e-shares" class="input" type="number" step="any">
+
+      <label>Purchase Price</label>
+      <input id="e-pp" class="input" type="number" step="any">
+
+      <label>Dividend (€/sh)</label>
+      <input id="e-divps" class="input" type="number" step="any">
+
+      <label>Current Price</label>
+      <input id="e-price" class="input" type="number" step="any">
+
+      <div class="modal-actions">
+        <button class="btn" onclick="closeEdit()">Cancel</button>
+        <button class="btn btn--gold" onclick="saveEdit()">Save</button>
+      </div>
+    </div>
   </div>
 
 </section>
