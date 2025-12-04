@@ -371,4 +371,19 @@ tbody tr:hover{ background:rgba(212,175,55,.06) }
   line-height:1.6;
   color:var(--text-1);
 }
+.news-bullets {
+  margin: 6px 0 10px 0;
+  padding-left: 18px;
+  color: var(--text-1);
+  font-size: 0.88rem;
+  line-height: 1.4;
+}
+
+.news-bullets li {
+  margin-bottom: 4px;
+}
+
+.pos { color:#27ae60; font-weight:bold; }
+.neg { color:#e74c3c; font-weight:bold; }
+.num { color:var(--gold-strong); font-weight:bold; }
 
