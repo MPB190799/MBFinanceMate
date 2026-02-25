@@ -2,11 +2,10 @@
 
   <div class="card">
     <div class="card__header">
-      <h2 class="card__title">📊 Makro-Dashboard</h2>
-      <span class="card__subtitle">CPI · M2 · Yield Curve · VIX · Fear &amp; Greed</span>
+      <h2 class="card__title">📊 Macro Dashboard</h2>
+      <span class="card__subtitle">CPI · M2 · Fed Rate · Yield Curve · VIX · Fear &amp; Greed · Unemployment</span>
     </div>
 
-    
     <div class="macro-grid">
 
       <!-- CPI -->
@@ -16,17 +15,17 @@
           <span id="macro-cpi-value">–</span>
           <span class="macro-card-trend" id="macro-cpi-trend">→</span>
         </div>
-        <div class="macro-card-note" id="macro-cpi-note">Lade…</div>
+        <div class="macro-card-note" id="macro-cpi-note">Loading…</div>
       </div>
 
-      <!-- M2 -->
+      <!-- Fed Funds Rate -->
       <div class="macro-card">
-        <div class="macro-card-title">💧 Geldmenge (M2 YoY)</div>
+        <div class="macro-card-title">🏦 Fed Funds Rate</div>
         <div class="macro-card-value">
-          <span id="macro-m2-value">–</span>
-          <span class="macro-card-trend" id="macro-m2-trend">→</span>
+          <span id="macro-fed-value">–</span>
+          <span class="macro-card-trend" id="macro-fed-trend">→</span>
         </div>
-        <div class="macro-card-note" id="macro-m2-note">Lade…</div>
+        <div class="macro-card-note" id="macro-fed-note">Loading…</div>
       </div>
 
       <!-- Yield Curve -->
@@ -36,41 +35,71 @@
           <span id="macro-yc-value">–</span>
           <span class="macro-card-trend" id="macro-yc-trend">→</span>
         </div>
-        <div class="macro-card-note" id="macro-yc-note">Lade…</div>
+        <div class="macro-card-note" id="macro-yc-note">Loading…</div>
+      </div>
+
+      <!-- M2 -->
+      <div class="macro-card">
+        <div class="macro-card-title">💧 Money Supply (M2 YoY)</div>
+        <div class="macro-card-value">
+          <span id="macro-m2-value">–</span>
+          <span class="macro-card-trend" id="macro-m2-trend">→</span>
+        </div>
+        <div class="macro-card-note" id="macro-m2-note">Loading…</div>
+      </div>
+
+      <!-- Unemployment -->
+      <div class="macro-card">
+        <div class="macro-card-title">👷 Unemployment Rate</div>
+        <div class="macro-card-value">
+          <span id="macro-unemp-value">–</span>
+          <span class="macro-card-trend" id="macro-unemp-trend">→</span>
+        </div>
+        <div class="macro-card-note" id="macro-unemp-note">Loading…</div>
       </div>
 
       <!-- VIX -->
       <div class="macro-card">
-        <div class="macro-card-title">⚡ Volatilität (VIX)</div>
+        <div class="macro-card-title">⚡ Volatility (VIX)</div>
         <div class="macro-card-value">
           <span id="macro-vix-value">–</span>
           <span class="macro-card-trend" id="macro-vix-trend">→</span>
         </div>
-        <div class="macro-card-note" id="macro-vix-note">Lade…</div>
+        <div class="macro-card-note" id="macro-vix-note">Loading…</div>
       </div>
 
-      <!-- Fear & Greed (NEU) -->
+      <!-- Fear & Greed -->
       <div class="macro-card fg-card">
         <div class="macro-card-title">🧠 Fear &amp; Greed Index</div>
         <div class="macro-card-value">
           <span id="macro-fg-icon">–</span>
           <span id="macro-fg-value">–</span>
         </div>
-        <div style="font-size:0.8rem; color:#d4af37; margin-top:4px;" id="macro-fg-label"></div>
-        <div class="macro-card-note" id="macro-fg-note">Lade…</div>
+        <div style="font-size:0.8rem;color:#d4af37;margin-top:4px;" id="macro-fg-label"></div>
+        <div class="macro-card-note" id="macro-fg-note">Loading…</div>
+      </div>
+
+      <!-- 10Y Treasury -->
+      <div class="macro-card">
+        <div class="macro-card-title">📈 10Y Treasury Yield</div>
+        <div class="macro-card-value">
+          <span id="macro-10y-value">–</span>
+          <span class="macro-card-trend" id="macro-10y-trend">→</span>
+        </div>
+        <div class="macro-card-note" id="macro-10y-note">Loading…</div>
       </div>
 
     </div>
 
-    
-    <div class="zins-impact">
-      <strong>💰 Zins-Impact:</strong>
-      <span id="macro-zins-impact">Lade…</span>
+    <!-- Rate Impact Banner -->
+    <div class="zins-impact" style="margin-top:16px;">
+      <strong>💰 Rate Impact on your Holdings:</strong>
+      <span id="macro-zins-impact">Loading…</span>
     </div>
 
-    
+    <!-- Interpretation + Sector Readout -->
     <div id="macro-interpretation">
-      <strong>⏳ Lade Analyse…</strong>
+      <strong>⏳ Loading analysis…</strong>
     </div>
 
   </div>

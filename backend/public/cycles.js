@@ -328,36 +328,70 @@
   ============================================================= */
 
   async function loadInventoriesBlock() {
+    // Historical reference ranges (US DOE, approximate seasonal averages)
+    const RANGES = {
+      crude_total:  { low: 410_000, high: 480_000, unit: "kbbl", label: "Crude Oil",    norm: "410–480M bbl" },
+      crude_ex_spr: { low: 360_000, high: 440_000, unit: "kbbl", label: "Crude ex SPR", norm: "360–440M bbl" },
+      gasoline:     { low: 220_000, high: 250_000, unit: "kbbl", label: "Gasoline",     norm: "220–250M bbl" },
+      distillate:   { low: 100_000, high: 140_000, unit: "kbbl", label: "Distillate",   norm: "100–140M bbl" },
+      ng_storage:   { low: 1_500,   high: 3_200,   unit: "Bcf",  label: "Nat. Gas",     norm: "1,500–3,200 Bcf" },
+    };
+
     try {
       const inv = await fetch("/api/eia/inventories").then(r => r.json()).catch(() => null);
-      if (!inv) return { html: "⚠️ EIA Lagerdaten nicht verfügbar.", oilScore: 0 };
+
+      // Check if all values are null → API key likely not configured
+      const allNull = !inv || Object.values(inv).every(r => r?.value == null);
+      if (allNull) {
+        return {
+          html: `<strong>🛢️ EIA Inventory Reference (5Y historical ranges)</strong><br><br>` +
+            Object.entries(RANGES).map(([,r]) =>
+              `${r.label}: <span style="color:#7a8aaa;">No live data</span> &nbsp;|&nbsp; <span class="mc-note">Normal range: ${r.norm}</span>`
+            ).join("<br>") +
+            `<br><br><span style="color:#7a8aaa;font-size:.8rem;">⚠️ Live EIA data unavailable (check EIA_API_KEY in .env). Showing reference ranges only.</span>`,
+          oilScore: 0
+        };
+      }
 
       let html = `<strong>🛢️ Öl & Gas Lagerbestände (vs. 5Y-Durchschnitt)</strong><br><br>`;
       let oilScore = 0;
 
-      const rows = [
-        ["Crude Oil",    inv.crude_total],
-        ["Crude ex SPR", inv.crude_ex_spr],
-        ["Gasoline",     inv.gasoline],
-        ["Distillate",   inv.distillate],
-        ["NatGas",       inv.ng_storage]
-      ];
-
-      for (const [label, r] of rows) {
+      for (const [key, cfg] of Object.entries(RANGES)) {
+        const r   = inv[key];
         if (!r) continue;
         const vs5y = num(r.vs5y_pct);
-        let signal = "⚖️ normal";
-        if (vs5y != null) {
-          if (vs5y < -5)  { signal = "🔺 knapp";  oilScore++; }
-          else if (vs5y > 5)  { signal = "🔻 hoch"; oilScore--; }
+        const val  = r.value != null ? Number(r.value) : null;
+
+        // Format absolute value
+        let absStr = "–";
+        if (val != null) {
+          if (cfg.unit === "kbbl") absStr = (val / 1000).toFixed(1) + "M bbl";
+          else                      absStr = val.toFixed(0) + " Bcf";
         }
-        html += `${label}: <strong>${vs5y != null ? vs5y.toFixed(1) + "%" : "–"}</strong> → ${signal}<br>`;
+
+        // Range check (even if vs5y missing, use absolute value)
+        let signal = "⚖️ normal", color = "#9aa6c0";
+        if (vs5y != null) {
+          if      (vs5y < -5)  { signal = "🔺 knapp";  color = "#4ade80"; oilScore++; }
+          else if (vs5y > 5)   { signal = "🔻 hoch";   color = "#f87171"; oilScore--; }
+          else                 { signal = "⚖️ normal";  color = "#9aa6c0"; }
+        } else if (val != null) {
+          // Fallback: use absolute range
+          if      (val < cfg.low)  { signal = "🔺 knapp";  color = "#4ade80"; oilScore++; }
+          else if (val > cfg.high) { signal = "🔻 hoch";   color = "#f87171"; oilScore--; }
+          else                     { signal = "⚖️ normal";  color = "#9aa6c0"; }
+        }
+
+        const vs5yStr = vs5y != null ? ` <span style="color:#7a8aaa;font-size:.78rem;">(vs 5Y: ${vs5y > 0 ? "+" : ""}${vs5y.toFixed(1)}%)</span>` : "";
+        html += `${cfg.label}: <strong style="color:${color};">${absStr}</strong>${vs5yStr} → <strong style="color:${color};">${signal}</strong> &nbsp;<span style="color:#7a8aaa;font-size:.76rem;">norm: ${cfg.norm}</span><br>`;
       }
 
       html += `<br><strong>📦 Fazit:</strong> `;
-      if (oilScore >= 2)       html += "🔺 Lager knapp → Angebotsknappheit → Ölpreis tendenziell ↑";
-      else if (oilScore <= -2) html += "🔻 Lager hoch → Angebotsüberhang → Ölpreis tendenziell ↓";
-      else                     html += "⚖️ Lager normal → neutraler Einfluss auf Ölpreis";
+      if      (oilScore >= 2)  html += `<strong style="color:#4ade80;">🔺 Lager knapp → Angebotsknappheit → Ölpreis tendenziell ↑ &nbsp; Rückenwind für Tanker/Upstream</strong>`;
+      else if (oilScore <= -2) html += `<strong style="color:#f87171;">🔻 Lager hoch → Angebotsüberhang → Ölpreis tendenziell ↓ &nbsp; Gegenwind für Energy-Dividenden</strong>`;
+      else                     html += `<strong style="color:#9aa6c0;">⚖️ Lager im Normbereich → neutraler Einfluss auf Ölpreis</strong>`;
+
+      html += `<br><span class="mc-note">Interpretation: &lt;−5% vs 5Y-Avg = Angebotsknappheit (bullish), &gt;+5% = Überangebot (bearish). Entscheidend für: Tanker, Upstream, LNG-Shipping.</span>`;
 
       return { html, oilScore };
     } catch {

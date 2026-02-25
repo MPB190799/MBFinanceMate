@@ -970,10 +970,21 @@ async function getM2YoY() {
   return null;
 }
 
+async function getFedRate() {
+  return await fredLatestValue("FEDFUNDS");
+}
+async function getUnemployment() {
+  return await fredLatestValue("UNRATE");
+}
+async function getPCEInflation() {
+  return await fredLatestValue("PCEPI");
+}
+
 app.get("/api/macro/summary", async (_req, res) => {
   try {
-    const [treasury, cpi, m2, vix, fg] = await Promise.all([
-      getTreasuryLatest(), getCPIYoY(), getM2YoY(), getVIX(), getFearGreed()
+    const [treasury, cpi, m2, vix, fg, fedRate, unemployment] = await Promise.all([
+      getTreasuryLatest(), getCPIYoY(), getM2YoY(), getVIX(), getFearGreed(),
+      getFedRate(), getUnemployment()
     ]);
 
     let summary = "📊 Makro-Überblick:\n";
@@ -986,7 +997,7 @@ app.get("/api/macro/summary", async (_req, res) => {
     if (vix) summary += `- VIX: ${vix.value} (${vix.source})\n`;
     if (fg)  summary += `- Fear & Greed: ${fg.value} (${fg.label})\n`;
 
-    res.json({ summary: summary.trim(), treasury, cpi, m2, vix, fearGreed: fg });
+    res.json({ summary: summary.trim(), treasury, cpi, m2, vix, fearGreed: fg, fedRate, unemployment });
   } catch (e) {
     console.error("macro summary error", e?.message);
     res.status(500).json({ error: "Macro summary failed" });

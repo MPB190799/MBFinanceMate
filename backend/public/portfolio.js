@@ -431,6 +431,90 @@ function renderKPIs() {
 function makeCell(t,c){const td=document.createElement("td");if(c)td.className=c;td.textContent=t;return td;}
 function htmlCell(h,c){const td=document.createElement("td");if(c)td.className=c;td.innerHTML=h;return td;}
 
+/* ── INLINE CELL EDITING ── */
+function makeEditableCell(field, rowId, rawVal, fmtFn) {
+  const td = document.createElement("td");
+  td.className = "num editable-cell";
+  td.textContent = fmtFn(rawVal);
+  td.title = "Click to edit";
+  td.addEventListener("click", e => {
+    e.stopPropagation();
+    startInlineEdit(td, field, rowId, rawVal, fmtFn);
+  });
+  return td;
+}
+function makeEditableTextCell(field, rowId, rawVal) {
+  const td = document.createElement("td");
+  td.className = "editable-cell";
+  td.textContent = rawVal || "–";
+  td.title = "Click to edit";
+  td.addEventListener("click", e => {
+    e.stopPropagation();
+    startInlineEditText(td, field, rowId, rawVal);
+  });
+  return td;
+}
+function startInlineEdit(td, field, rowId, rawVal, fmtFn) {
+  if (td.querySelector("input")) return;
+  const prevText = td.textContent;
+  const inp = document.createElement("input");
+  inp.type = "number"; inp.step = "any";
+  inp.value = rawVal ?? "";
+  inp.style.cssText = "width:100%;min-width:62px;padding:3px 6px;background:rgba(201,162,39,.15);border:1.5px solid #e8c050;border-radius:5px;color:#f0f4ff;font-size:inherit;font-family:inherit;text-align:right;outline:none;box-shadow:0 0 0 3px rgba(232,192,80,.12);";
+  td.textContent = ""; td.appendChild(inp);
+  inp.focus(); inp.select();
+  let done = false;
+  const save = async () => {
+    if (done) return; done = true;
+    const v = parseLocaleNumber(inp.value);
+    td.textContent = fmtFn(v);
+    if (v === (rawVal ?? 0)) return;
+    try {
+      await apiUpdate(rowId, { [field]: v });
+      showToast("✅ Saved");
+      await loadAndRender();
+    } catch(e) { td.textContent = prevText; showToast("❌ " + e.message, "error"); }
+  };
+  const cancel = () => { if (done) return; done = true; td.textContent = prevText; };
+  inp.addEventListener("keydown", e => {
+    if (e.key === "Enter")  { e.preventDefault(); save(); }
+    if (e.key === "Escape") { e.preventDefault(); cancel(); }
+    e.stopPropagation();
+  });
+  inp.addEventListener("click", e => e.stopPropagation());
+  inp.addEventListener("blur",  () => setTimeout(() => { if (!done) save(); }, 130));
+}
+function startInlineEditText(td, field, rowId, rawVal) {
+  if (td.querySelector("input")) return;
+  const prevText = td.textContent;
+  const inp = document.createElement("input");
+  inp.type = "text";
+  inp.value = rawVal || "";
+  inp.style.cssText = "width:100%;min-width:80px;padding:3px 6px;background:rgba(201,162,39,.15);border:1.5px solid #e8c050;border-radius:5px;color:#f0f4ff;font-size:inherit;font-family:inherit;outline:none;box-shadow:0 0 0 3px rgba(232,192,80,.12);";
+  td.textContent = ""; td.appendChild(inp);
+  inp.focus(); inp.select();
+  let done = false;
+  const save = async () => {
+    if (done) return; done = true;
+    const v = inp.value.trim();
+    td.textContent = v || "–";
+    if (v === (rawVal || "")) return;
+    try {
+      await apiUpdate(rowId, { [field]: v });
+      showToast("✅ Saved");
+      await loadAndRender();
+    } catch(e) { td.textContent = prevText; showToast("❌ " + e.message, "error"); }
+  };
+  const cancel = () => { if (done) return; done = true; td.textContent = prevText; };
+  inp.addEventListener("keydown", e => {
+    if (e.key === "Enter")  { e.preventDefault(); save(); }
+    if (e.key === "Escape") { e.preventDefault(); cancel(); }
+    e.stopPropagation();
+  });
+  inp.addEventListener("click", e => e.stopPropagation());
+  inp.addEventListener("blur",  () => setTimeout(() => { if (!done) save(); }, 130));
+}
+
 function renderTable() {
   const tbody=$id("portfolio-body");
   if(!tbody) return;
@@ -445,8 +529,6 @@ function renderTable() {
     const yoc=row.yocPct, yld=row.officialYieldPct;
     const tr=document.createElement("tr");
     tr.dataset.rowId=String(row.id);
-    tr.style.cursor="pointer";
-    tr.title="Klicken zum Bearbeiten / Nachkaufen";
 
     // Farblogik
     if(yoc!=null&&yoc>=8){
@@ -459,7 +541,6 @@ function renderTable() {
       tr.style.background="rgba(251,146,60,0.05)";
       tr.style.borderLeft="3px solid rgba(251,146,60,0.35)";
     }
-    tr.addEventListener("click",()=>{if(window.getSelection()?.toString())return;window.openEdit(row.id);});
 
     const inv=row.investedVal||row.costBasis||row.investedValue||0;
     const cur=row.positionVal||row.positionValue||row.curValue||0;
@@ -477,21 +558,35 @@ function renderTable() {
     const p=row.curPriceEUR??row.currentPrice??row.curPrice??0;
     const dps=row.dpsEUR??row.dividendPerShareTTM??0;
 
+    // Name cell (click → modal for full edit)
+    const nameTd = htmlCell(`<span style="font-weight:600;color:#e8edf8;">${row.name||"–"}</span><br>${sectorBadge(row.ticker)}`);
+    nameTd.style.cursor = "pointer";
+    nameTd.title = "Click to edit all fields";
+    nameTd.addEventListener("click", e => { e.stopPropagation(); window.openEdit(row.id); });
+
+    // Edit button
+    const editTd = document.createElement("td");
+    editTd.className = "num";
+    editTd.innerHTML = `<span style="font-size:.85rem;cursor:pointer;opacity:.6;transition:opacity .15s;" title="Edit all fields">✏️</span>`;
+    editTd.addEventListener("mouseenter", () => { editTd.querySelector("span").style.opacity="1"; });
+    editTd.addEventListener("mouseleave", () => { editTd.querySelector("span").style.opacity=".6"; });
+    editTd.addEventListener("click", e => { e.stopPropagation(); window.openEdit(row.id); });
+
     tr.append(
-      htmlCell(`<span style="font-weight:600;color:#e8edf8;">${row.name||"–"}</span><br>${sectorBadge(row.ticker)}`),
-      makeCell(row.isin||"–"),
-      makeCell((row.ticker||"–").toUpperCase()),
-      makeCell(fmtNum(row.shares,2),"num"),
-      makeCell(fmtEur(row.avgPrice)+" €","num"),
+      nameTd,
+      makeEditableTextCell("isin",   row.id, row.isin||""),
+      makeEditableTextCell("ticker", row.id, (row.ticker||"").toUpperCase()),
+      makeEditableCell("shares",          row.id, row.shares,                v => fmtNum(v,2)),
+      makeEditableCell("avgPrice",        row.id, row.avgPrice,              v => fmtEur(v)+" €"),
       htmlCell(fmtEur(p)+" €"+fxTag,"num"),
       makeCell(fmtNum(dps,4)+" €","num"),
       htmlCell(`<span style="${yldCol}">${fmtPct(yld)}</span>`,"num"),
       htmlCell(`<span style="${yocCol}">${fmtPct(yoc)}</span>${badge}`,"num"),
-      makeCell(fmtEur(row.dividendIncomeAnnual||0)+" €","num"),
+      makeEditableCell("divIncomeAnnual", row.id, row.dividendIncomeAnnual||0, v => fmtEur(v)+" €"),
       makeCell(fmtEur(inv)+" €","num"),
       makeCell(fmtEur(cur)+" €","num"),
       htmlCell(gainStr,gAbs>=0?"num mc-up":"num mc-down"),
-      htmlCell(`<span style="font-size:.85rem;cursor:pointer;opacity:.7;" title="Bearbeiten">✏️</span>`,"num"),
+      editTd,
     );
     tbody.appendChild(tr);
   });

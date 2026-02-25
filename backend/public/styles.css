@@ -222,7 +222,32 @@ td.num { color: var(--gold-strong); font-weight: 700; text-align: right; }
 th:has(+ td.num) { text-align: right; }  /* Header-Ausrichtung für num-Spalten */
 
 tbody tr:nth-child(even) { background: rgba(255,255,255,.02); }
-tbody tr:hover           { background: rgba(212,175,55,.06); cursor: pointer; }
+tbody tr:hover           { background: rgba(212,175,55,.04); }
+
+/* Inline-editable table cells */
+td.editable-cell {
+  position: relative;
+  cursor: text;
+  transition: background .12s, outline .12s;
+}
+td.editable-cell:hover {
+  background: rgba(201,162,39,.07) !important;
+  outline: 1px solid rgba(201,162,39,.3);
+  outline-offset: -1px;
+  border-radius: 3px;
+}
+td.editable-cell:hover::after {
+  content: "✎";
+  position: absolute;
+  top: 2px; right: 3px;
+  font-size: .58rem;
+  color: rgba(201,162,39,.5);
+  pointer-events: none;
+  line-height: 1;
+}
+td.editable-cell input:focus {
+  background: rgba(201,162,39,.15);
+}
 
 /* Horizontales Scrollen für große Tabellen */
 .table-wrap {

@@ -185,7 +185,7 @@
       return;
     }
 
-    const { cpi, m2, treasury, vix, fearGreed } = data;
+    const { cpi, m2, treasury, vix, fearGreed, fedRate, unemployment } = data;
     const bullets = [];
 
     /* ---------- CPI ---------- */
@@ -206,6 +206,61 @@
       }
       safeSet("macro-cpi-note", cpiNote);
       bullets.push(cpiBullet);
+    }
+
+    /* ---------- Fed Funds Rate ---------- */
+    if (fedRate?.value != null) {
+      safeSet("macro-fed-value", fmt(fedRate.value) + " %");
+      safeSet("macro-fed-trend", fedRate.value > 4.5 ? "↑" : fedRate.value < 2 ? "↓" : "→");
+
+      let fedNote, fedBullet;
+      if (fedRate.value >= 5) {
+        fedNote   = `Fed rate ${fmt(fedRate.value)}% — restrictive. REITs & pipelines under pressure. BDC margins elevated.`;
+        fedBullet = `🏦 Fed rate ${fmt(fedRate.value)}% (high) → REITs/Pipelines pressured; BDC dividend income boosted.`;
+      } else if (fedRate.value >= 4) {
+        fedNote   = `Fed rate ${fmt(fedRate.value)}% — moderately high. Watch for rate cuts as tailwind for REITs.`;
+        fedBullet = `🏦 Fed rate ${fmt(fedRate.value)}% — transition zone. Rate-cut expectations key for REIT re-rating.`;
+      } else if (fedRate.value >= 2.5) {
+        fedNote   = `Fed rate ${fmt(fedRate.value)}% — neutral. Balanced environment for income assets.`;
+        fedBullet = `🏦 Fed rate ${fmt(fedRate.value)}% (neutral) → balanced for all sectors.`;
+      } else {
+        fedNote   = `Fed rate ${fmt(fedRate.value)}% — accommodative. Strong tailwind for REITs, Pipelines, BDCs.`;
+        fedBullet = `🏦 Fed rate ${fmt(fedRate.value)}% (low) → strong tailwind for REITs, Pipelines, income stocks.`;
+      }
+      safeSet("macro-fed-note", fedNote);
+      bullets.push(fedBullet);
+    }
+
+    /* ---------- Unemployment ---------- */
+    if (unemployment?.value != null) {
+      safeSet("macro-unemp-value", fmt(unemployment.value) + " %");
+      safeSet("macro-unemp-trend", unemployment.value > 5 ? "↑" : unemployment.value < 4 ? "↓" : "→");
+
+      let unempNote, unempBullet;
+      if (unemployment.value < 4) {
+        unempNote   = `Unemployment ${fmt(unemployment.value)}% — tight labor market. Wage inflation risk; shipping demand solid.`;
+        unempBullet = `👷 Unemployment ${fmt(unemployment.value)}% (tight) → consumer spending strong → shipping/energy demand supported.`;
+      } else if (unemployment.value < 5.5) {
+        unempNote   = `Unemployment ${fmt(unemployment.value)}% — healthy labor market. No immediate recession signal.`;
+        unempBullet = `👷 Unemployment ${fmt(unemployment.value)}% (healthy) → stable demand, no recession warning.`;
+      } else {
+        unempNote   = `Unemployment ${fmt(unemployment.value)}% — rising. Recession risk elevated. Freight demand may weaken.`;
+        unempBullet = `👷 Unemployment ${fmt(unemployment.value)}% (rising) → demand slowdown risk → monitor shipping rates & dividend safety.`;
+      }
+      safeSet("macro-unemp-note", unempNote);
+      bullets.push(unempBullet);
+    }
+
+    /* ---------- 10Y Treasury (standalone card) ---------- */
+    if (treasury?.y10 != null) {
+      safeSet("macro-10y-value", fmt(treasury.y10) + " %");
+      const tenNote = treasury.y10 > 4.5
+        ? `High 10Y yield (${fmt(treasury.y10)}%) → pressure on long-duration assets. Shipping/Energy less affected.`
+        : treasury.y10 < 3.5
+        ? `Low 10Y yield (${fmt(treasury.y10)}%) → tailwind for REITs, Pipelines, BDCs.`
+        : `10Y yield ${fmt(treasury.y10)}% — moderate. Neutral for income stocks.`;
+      safeSet("macro-10y-note", tenNote);
+      safeSet("macro-10y-trend", treasury.y10 > 4.5 ? "↑" : treasury.y10 < 3.5 ? "↓" : "→");
     }
 
     /* ---------- M2 ---------- */
