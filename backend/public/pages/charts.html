@@ -1,0 +1,99 @@
+<section class="tabcontent active">
+
+  <div class="card">
+
+    <!-- Header -->
+    <div class="card__header">
+      <h2 class="card__title">Aktien-Analyse</h2>
+      <span class="card__subtitle">Zyklus · Momentum · Fundamentals · Einschätzung</span>
+    </div>
+
+    <!-- Such-Box -->
+    <form id="chart-form" class="chart-search">
+      <input
+        id="chart-ticker"
+        type="text"
+        placeholder="Ticker eingeben (z.B. TORM, FLNG, VALE)"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <button id="chart-run" type="submit">Analysieren</button>
+    </form>
+    <div id="stock-error"></div>
+
+    <!-- KPI Schnellübersicht -->
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Ticker</div>
+        <div class="kpi-value" id="stock-ticker">–</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Kurs</div>
+        <div class="kpi-value" id="stock-price">–</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Veränderung</div>
+        <div class="kpi-value">
+          <span id="stock-change">–</span>
+          (<span id="stock-change-pct">–</span>)
+        </div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Tages-Range</div>
+        <div class="kpi-value" id="stock-day-range">–</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Volumen</div>
+        <div class="kpi-value" id="stock-volume">–</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">VWAP</div>
+        <div class="kpi-value" id="stock-vw">–</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Intraday-Range</div>
+        <div class="kpi-value" id="stock-range-pct">–</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Risk / Reward</div>
+        <div class="kpi-value" id="stock-rr">–</div>
+      </div>
+    </div>
+
+    <!-- Intraday Rating -->
+    <div style="margin-bottom: 20px; padding: 12px; background: rgba(255,255,255,0.02); border-radius: 6px;">
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 6px;">
+        <span style="font-size: 0.85rem; color: #9aa6c0;">Intraday-Signal:</span>
+        <span id="stock-rating-badge" class="rating-badge rating-neutral">–</span>
+      </div>
+      <div id="stock-rating-text" style="font-size: 0.85rem; color: #cfd6e6;">–</div>
+    </div>
+
+    <!-- Sektor-Profil -->
+    <div style="margin-bottom: 20px; padding: 12px; background: rgba(212, 175, 55, 0.05); border: 1px solid rgba(212, 175, 55, 0.15); border-radius: 6px;">
+      <div style="font-size: 0.75rem; color: #9aa6c0; margin-bottom: 4px; text-transform: uppercase;">Sektor-Profil</div>
+      <div id="stock-hard-asset" style="font-size: 0.9rem; color: #cfd6e6;">–</div>
+    </div>
+
+    <!-- Chart -->
+    <div class="chart-wrap" style="height: 260px;">
+      <canvas id="priceChart"></canvas>
+    </div>
+
+  </div>
+
+  
+  <div class="card mt-lg">
+    <div class="card__header">
+      <h2 class="card__title">📊 Analyse & Einschätzung</h2>
+      <span class="card__subtitle">Zyklus-Position · Momentum · Sonderdividenden · Fundamentals</span>
+    </div>
+
+    <div id="stock-analysis">
+      <p style="color: #9aa6c0; text-align: center; padding: 40px 0;">
+        👆 Ticker eingeben und "Analysieren" klicken
+      </p>
+    </div>
+  </div>
+
+</section>

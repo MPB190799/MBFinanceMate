@@ -1,0 +1,1216 @@
+/* ============================================================
+   MBFinanceMate – PREMIUM GLOBAL STYLESHEET v2.1
+   Dark+Gold • News 3.0 • Market Cycles • Dividends • Portfolio
+   ============================================================ */
+
+/* ============================================================
+   NOTE: CSS Variables are defined in index.html <style> block
+   (single source of truth — no duplicate :root here)
+   styles.css provides component styles only.
+   ============================================================ */
+
+/* ============================================================
+   BASE RESET
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; }
+html, body { height: 100%; }
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Inter, Arial, system-ui, sans-serif;
+  background:
+    radial-gradient(1000px 700px at 85% -10%, rgba(212,175,55,.08), transparent 60%),
+    radial-gradient(900px 600px at -10% 100%, rgba(130,207,255,.07), transparent 60%),
+    var(--bg-0);
+  color: var(--text-1);
+  line-height: 1.55;
+  /* FIX: background-attachment verhindert Flicker auf iOS */
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3, h4 { color: var(--text-0); margin: 0 0 8px; }
+
+/* ============================================================
+   HEADER
+   ============================================================ */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 18px;
+  background: var(--bg-1);
+  border-bottom: var(--border);
+  backdrop-filter: blur(6px);
+}
+
+.header h1 {
+  font-size: clamp(1.1rem, 2vw, 1.5rem);
+  margin: 0;
+  background: linear-gradient(135deg, var(--gold), var(--gold-strong));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.logo {
+  max-width: 100px;
+  height: auto;
+  filter: drop-shadow(0 4px 12px rgba(0,0,0,.4));
+}
+
+/* ============================================================
+   NAVIGATION TABS
+   ============================================================ */
+.tabs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 14px;
+  background: var(--bg-1);
+  border-bottom: var(--border);
+  position: sticky;
+  /* FIX: top war hardcoded 68px – jetzt dynamisch via header height */
+  top: 56px;
+  z-index: 25;
+  flex-wrap: wrap;
+}
+
+.tabbtn {
+  border: var(--border);
+  background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(0,0,0,.08)), var(--bg-2);
+  color: var(--text-1);
+  padding: 8px 14px;
+  border-radius: var(--radius-md);
+  font-size: 0.87rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.tabbtn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-1);
+  color: var(--text-0);
+}
+
+.tabbtn.active {
+  background: linear-gradient(180deg, rgba(212,175,55,.12), rgba(0,0,0,.10)), var(--elev);
+  color: #fff;
+  border: var(--border-strong);
+  box-shadow: 0 0 0 1px rgba(212,175,55,.18), var(--shadow-1);
+}
+
+/* ============================================================
+   MAIN LAYOUT
+   ============================================================ */
+main {
+  padding: var(--page-pad);
+  max-width: min(var(--container-max), 96vw);
+  margin: 0 auto;
+}
+
+.section { margin: 16px 0; }
+
+/* 12-column grid für große Screens */
+@media (min-width: 1200px) {
+  .section-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: clamp(10px, 1.2vw, 20px);
+    align-items: flex-start;
+  }
+  .col-4  { grid-column: span 4; }
+  .col-6  { grid-column: span 6; }
+  .col-8  { grid-column: span 8; }
+  .col-12 { grid-column: 1 / -1; }
+}
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.06)), var(--bg-1);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  box-shadow: var(--shadow-1);
+  transition: box-shadow var(--transition);
+}
+.card:hover { box-shadow: var(--shadow-gold); }
+
+.card__title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-0);
+  margin: 0 0 12px;
+  padding-bottom: 10px;
+  border-bottom: var(--border);
+}
+
+/* ============================================================
+   KPI SUMMARY CARDS
+   ============================================================ */
+.summary, .kpi {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: clamp(8px, 1vw, 14px);
+  margin-top: 10px;
+}
+
+.summary .card, .kpi .card {
+  padding: 14px 16px;
+}
+
+.summary .value, .kpi .value {
+  font-size: clamp(1.1rem, 1.2vw, 1.4rem);
+  color: var(--text-0);
+  font-weight: 800;
+  margin-top: 4px;
+}
+
+.summary .label, .kpi .label {
+  color: var(--text-2);
+  font-weight: 500;
+  font-size: .82rem;
+  text-transform: uppercase;
+  letter-spacing: .3px;
+}
+
+/* ============================================================
+   TABLES
+   ============================================================ */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 12px;
+  background: var(--bg-1);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-1);
+}
+
+thead {
+  background: linear-gradient(180deg, rgba(212,175,55,.10), rgba(0,0,0,.14)), var(--bg-2);
+}
+
+th, td {
+  padding: 10px 12px;
+  text-align: left;
+  border-bottom: var(--border);
+  white-space: nowrap;  /* FIX: verhindert Umbrüche in Tabellenzellen */
+}
+
+th {
+  color: var(--text-0);
+  font-size: .82rem;
+  font-weight: 700;
+  letter-spacing: .3px;
+}
+
+td { color: var(--text-1); font-size: .9rem; }
+td.num { color: var(--gold-strong); font-weight: 700; text-align: right; }
+th:has(+ td.num) { text-align: right; }  /* Header-Ausrichtung für num-Spalten */
+
+tbody tr:nth-child(even) { background: rgba(255,255,255,.02); }
+tbody tr:hover           { background: rgba(212,175,55,.06); cursor: pointer; }
+
+/* Horizontales Scrollen für große Tabellen */
+.table-wrap {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border-radius: var(--radius-lg);
+}
+
+/* ============================================================
+   FORMS & INPUTS
+   ============================================================ */
+.upload-controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.input,
+input[type="text"],
+input[type="number"],
+input[type="file"],
+select {
+  background: var(--bg-2);
+  color: var(--text-0);
+  border: var(--border);
+  border-radius: var(--radius-md);
+  padding: 10px 12px;
+  min-height: 40px;
+  font-size: 0.9rem;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.input:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
+select:focus {
+  outline: none;
+  box-shadow: var(--shadow-1);
+  border: var(--border-strong);
+}
+
+label {
+  color: var(--text-2);
+  font-size: 0.85rem;
+  display: block;
+  margin-bottom: 2px;
+}
+
+::placeholder { color: var(--muted); opacity: .9; }
+
+/* ============================================================
+   BUTTONS
+   Varianten: Standard (Gold), --secondary (Ghost), --gold, --small
+   ============================================================ */
+button, .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  border-radius: var(--radius-md);
+  border: var(--border);
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-strong) 100%);
+  color: #0f1115;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+  transition: transform var(--transition), box-shadow var(--transition), filter var(--transition);
+  min-height: 38px;
+  box-shadow: 0 0 12px rgba(212,175,55,.3);
+  white-space: nowrap;
+}
+
+button:hover, .btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.08);
+  box-shadow: 0 0 20px rgba(212,175,55,.45);
+}
+
+button:disabled, .btn:disabled {
+  opacity: .45;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Gold explizit (alias für Standard, für ältere Klassen) */
+.btn--gold {
+  background: linear-gradient(135deg, var(--gold) 0%, var(--gold-strong) 100%);
+  color: #0f1115;
+}
+
+/* NEU: Secondary (Ghost-Button für Abbrechen, Cancel etc.) */
+.btn--secondary {
+  background: transparent;
+  border: 1px solid rgba(255,255,255,.18);
+  color: var(--text-2);
+  box-shadow: none;
+}
+.btn--secondary:hover {
+  background: rgba(255,255,255,.05);
+  color: var(--text-0);
+  box-shadow: none;
+  filter: none;
+}
+
+/* NEU: Small (für Tabellen-Aktionen wie ✏️) */
+.btn--small {
+  padding: 4px 8px;
+  min-height: 28px;
+  font-size: 0.8rem;
+  box-shadow: none;
+}
+.btn--small:hover {
+  transform: none;
+  filter: brightness(1.1);
+}
+
+/* ============================================================
+   INFO BOX
+   ============================================================ */
+.info-box {
+  padding: 10px 12px;
+  border: var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-2);
+  color: var(--text-1);
+  margin: 6px 0;
+  line-height: 1.6;
+  font-size: 0.9rem;
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 8px;
+}
+
+/* ============================================================
+   TAB CONTENT VISIBILITY
+   ============================================================ */
+.hidden    { display: none !important; }
+.tabcontent { display: none; }
+.tabcontent.active {
+  display: block;
+  animation: fadeIn .18s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ============================================================
+   UTILITIES
+   ============================================================ */
+.mt-md { margin-top: 14px; }
+.mt-lg { margin-top: 20px; }
+
+/* Status Farben – NUR EINMAL definiert (vorher 2x dupliziert!) */
+.num  { color: var(--gold-strong); font-weight: 700; }
+.pos  { color: var(--success);     font-weight: 700; }
+.neg  { color: var(--danger);      font-weight: 700; }
+
+/* Market Cycles Farben */
+.mc-up   { color: var(--success); font-weight: 700; }
+.mc-down { color: var(--danger);  font-weight: 700; }
+.mc-flat { color: var(--text-2);  font-weight: 700; }
+.mc-note { font-size: 0.8rem; color: var(--text-2); }
+
+/* Bull/Mixed/Bear Badges */
+.mc-badge { display: inline-block; padding: 3px 9px; border-radius: 6px; font-weight: 700; font-size: 0.82rem; }
+.mc-bull  { background: #1b5e20; color: #fff; }
+.mc-bear  { background: #7f0000; color: #fff; }
+.mc-mixed { background: #444;    color: #fff; }
+
+/* ============================================================
+   PROGRESS BAR
+   ============================================================ */
+.progress {
+  width: 100%;
+  background: var(--bg-2);
+  border: var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  margin: 8px 0;
+}
+
+.progress__bar, #progressBar {
+  height: 14px;
+  background: linear-gradient(90deg, var(--gold), var(--gold-strong));
+  color: #000;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: width .4s ease;
+}
+
+/* ============================================================
+   CHARTS
+   ============================================================ */
+.chart {
+  width: 100% !important;
+  display: block;
+  border-radius: var(--radius-md);
+}
+
+.chart--tall {
+  /* FIX: war früher kein explizites Canvaselement-Style – jetzt korrekt */
+  height: 320px !important;
+  max-height: 400px;
+}
+
+.chart-wrap {
+  width: 100%;
+  max-width: 100%;
+  height: 280px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+
+/* ============================================================
+   SKELETON LOADER
+   ============================================================ */
+.skel {
+  height: 14px;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    rgba(255,255,255,.06),
+    rgba(255,255,255,.02) 40%,
+    rgba(255,255,255,.06) 80%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite linear;
+  margin: 6px 0;
+}
+
+@keyframes shimmer {
+  from { background-position: 200% 0; }
+  to   { background-position: -200% 0; }
+}
+
+.sk-line {
+  height: 10px;
+  background: linear-gradient(90deg, rgba(255,255,255,.05), rgba(255,255,255,.12), rgba(255,255,255,.05));
+  border-radius: 6px;
+  margin: 6px 0;
+  animation: sk-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes sk-pulse {
+  0%, 100% { opacity: .35; }
+  50%       { opacity: 1; }
+}
+
+/* ============================================================
+   NEWS ENGINE 3.0
+   ============================================================ */
+#news-container {
+  display: grid;
+  gap: 16px;
+}
+
+.news-card {
+  background: var(--bg-1);
+  border: var(--border);
+  border-left: 5px solid var(--gold);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-1);
+  transition: background var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.news-card:hover {
+  background: var(--elev);
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px rgba(212,175,55,.22);
+}
+
+.news-card.sent-bull    { border-left-color: var(--success); }
+.news-card.sent-bear    { border-left-color: var(--danger); }
+.news-card.sent-neutral { border-left-color: rgba(255,255,255,.2); }
+
+.news-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.news-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 800;
+  color: var(--text-0);
+  line-height: 1.3;
+}
+
+.news-date  { font-size: 0.8rem;  color: var(--text-2); }
+.news-desc  { font-size: 0.9rem;  color: var(--text-1); line-height: 1.5; margin-bottom: 8px; }
+
+.news-bullets {
+  margin: 6px 0 8px 14px;
+  padding-left: 14px;
+  color: var(--text-1);
+  line-height: 1.5;
+  font-size: 0.87rem;
+}
+.news-bullets li { margin: 3px 0; }
+
+.news-badges {
+  display: flex;
+  gap: 5px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  letter-spacing: .4px;
+  text-transform: uppercase;
+}
+
+.badge.earn   { background: rgba(130,207,255,.15); color: var(--accent); }
+.badge.div    { background: rgba(212,175,55,.18);  color: var(--gold); }
+.badge.ma     { background: rgba(231,76,60,.18);   color: var(--danger); }
+.badge.guid   { background: rgba(0,188,212,.18);   color: #00e1ff; }
+.badge.ceo    { background: rgba(255,152,0,.20);   color: #ffb74d; }
+.badge.macro  { background: rgba(144,202,249,.18); color: #90caf9; }
+.badge.legal  { background: rgba(240,98,146,.18);  color: #f48fb1; }
+.badge.impact { background: rgba(212,175,55,.22);  color: var(--gold-strong); }
+
+.sentiment-label {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin: 5px 0 3px;
+}
+.sentiment-label.positive { background: rgba(46,204,113,.18); color: var(--success); }
+.sentiment-label.negative { background: rgba(255,90,89,.18);  color: var(--danger); }
+.sentiment-label.neutral  { background: rgba(255,255,255,.08); color: var(--text-1); }
+
+.news-body        { display: none; margin-top: 10px; }
+.news-body.open   { display: block; }
+
+.link-icon { font-size: 0.85rem; color: var(--accent); font-weight: 700; }
+.link-icon:hover { text-decoration: underline; }
+
+.expand-btn {
+  margin-top: 8px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  border: var(--border);
+  background: var(--bg-2);
+  color: var(--text-1);
+  font-size: 0.82rem;
+  transition: var(--transition);
+}
+.expand-btn:hover { background: var(--elev); }
+
+/* ============================================================
+   MACRO / MARKET CYCLES
+   ============================================================ */
+.macro-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin-bottom: 18px;
+}
+
+.macro-card {
+  background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(0,0,0,.06)), var(--bg-1);
+  border: var(--border);
+  border-radius: var(--radius-lg);
+  padding: 14px 16px;
+  box-shadow: var(--shadow-1);
+  transition: transform var(--transition), box-shadow var(--transition);
+}
+.macro-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(212,175,55,.25);
+}
+
+.macro-value { font-size: 1.7rem; font-weight: 800; color: var(--gold-strong); margin: 4px 0 2px; }
+.macro-note  { font-size: 0.82rem; color: var(--text-2); line-height: 1.4; }
+.macro-trend { font-size: 1.1rem; font-weight: 800; margin-left: 5px; }
+
+.macro-pos     { color: var(--success) !important; }
+.macro-neg     { color: var(--danger)  !important; }
+.macro-neutral { color: var(--text-1)  !important; }
+.macro-up      { color: var(--success); }
+.macro-down    { color: var(--danger); }
+.macro-flat    { color: var(--text-2); }
+
+#macro-interpretation,
+#mc-summary-box {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: var(--radius-lg);
+  background: var(--bg-1);
+  border: var(--border);
+  box-shadow: var(--shadow-1);
+  color: var(--text-1);
+  line-height: 1.6;
+}
+
+.mc-trend { margin-left: 4px; font-size: 1.05rem; font-weight: 900; }
+
+/* ============================================================
+   DIVIDENDS
+   ============================================================ */
+#avgMonthly {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--gold-strong);
+}
+
+/* ============================================================
+   MODAL (Edit Position)
+   ============================================================ */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.72);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.modal.hidden { display: none; }
+
+.modal-content {
+  width: 100%;
+  max-width: 480px;
+  background:
+    linear-gradient(180deg, rgba(255,255,255,.03), rgba(0,0,0,.08)),
+    var(--bg-1);
+  border: var(--border-strong);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow:
+    0 0 0 1px rgba(212,175,55,.15),
+    0 30px 80px rgba(0,0,0,.65);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content label {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: .4px;
+  margin-bottom: 0;
+}
+
+.modal-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+}
+.modal-actions .btn { flex: 1; justify-content: center; }
+
+/* FX-Info Box im Modal */
+#e-fx-info {
+  font-size: 0.8rem;
+  color: var(--gold);
+  padding: 8px 10px;
+  background: rgba(212,175,55,.07);
+  border-radius: var(--radius-sm);
+  min-height: 28px;
+  line-height: 1.4;
+}
+
+/* ============================================================
+   SMART WATCHLIST (NEU – für portfolio.js)
+   ============================================================ */
+#smart-watchlist .watch-item {
+  margin-bottom: 10px;
+  padding: 10px 12px;
+  background: rgba(255,255,255,.02);
+  border-left: 3px solid var(--gold);
+  border-radius: 4px;
+}
+
+/* ============================================================
+   REDUCED MOTION
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE – MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+  .tabs {
+    gap: 4px;
+    padding: 8px 10px;
+    top: 52px;
+  }
+
+  .tabbtn {
+    padding: 7px 10px;
+    font-size: 0.78rem;
+  }
+
+  .summary, .kpi {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .macro-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  th, td {
+    padding: 8px 8px;
+    font-size: 0.82rem;
+  }
+
+  .modal-content {
+    margin: 12px;
+    max-width: calc(100vw - 24px);
+  }
+
+  .chart--tall {
+    height: 240px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .summary, .kpi {
+    grid-template-columns: 1fr;
+  }
+
+  .macro-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .tabbtn {
+    font-size: 0.72rem;
+    padding: 6px 8px;
+  }
+
+  .upload-controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .upload-controls .input,
+  .upload-controls input,
+  .upload-controls button {
+    width: 100%;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════
+   GOAL PROGRESS BANNER  (portfolio tab)
+══════════════════════════════════════════════════════════ */
+#goal-banner {
+  background: linear-gradient(135deg, rgba(201,162,39,.1) 0%, rgba(10,12,15,.0) 100%);
+  border: 1px solid rgba(201,162,39,.25);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 18px;
+}
+
+#goal-banner .goal-header {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+#goal-banner .goal-current {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #e8c050;
+}
+
+#goal-banner .goal-label {
+  font-size: .82rem;
+  color: #9aa6c0;
+}
+
+#goal-banner .goal-track {
+  background: rgba(255,255,255,.06);
+  border-radius: 99px;
+  height: 14px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+#goal-bar {
+  height: 100%;
+  background: linear-gradient(90deg, #7a5f15, #e8c050);
+  border-radius: 99px;
+  transition: width .6s ease;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 6px;
+  font-size: .68rem;
+  font-weight: 700;
+  color: #0a0c0f;
+  min-width: 32px;
+  box-sizing: border-box;
+}
+
+#goal-banner .goal-meta {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: .78rem;
+  color: #9aa6c0;
+}
+
+#goal-banner .goal-meta span {
+  white-space: nowrap;
+}
+
+/* ══════════════════════════════════════════════════════════
+   NACHKAUF / INCOME BOOSTER RANKING TABLE  (portfolio tab)
+══════════════════════════════════════════════════════════ */
+#nachkauf-ranking-wrap {
+  overflow-x: auto;
+}
+
+.nachkauf-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+
+.nachkauf-table th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #7a8aaa;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  white-space: nowrap;
+}
+
+.nachkauf-table th:not(:first-child) {
+  text-align: right;
+}
+
+.nachkauf-table td {
+  padding: 8px 10px;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  color: #c8d4ec;
+  vertical-align: middle;
+}
+
+.nachkauf-table td:not(:first-child) {
+  text-align: right;
+}
+
+.nachkauf-table tr:hover td {
+  background: rgba(255,255,255,.025);
+}
+
+.nachkauf-badge {
+  display: inline-block;
+  padding: 2px 7px;
+  border-radius: 99px;
+  font-size: .68rem;
+  font-weight: 700;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.nachkauf-badge.strong-buy {
+  background: rgba(74,222,128,.15);
+  color: #4ade80;
+  border: 1px solid rgba(74,222,128,.3);
+}
+
+.nachkauf-badge.buy {
+  background: rgba(232,192,80,.12);
+  color: #e8c050;
+  border: 1px solid rgba(232,192,80,.25);
+}
+
+.nachkauf-badge.hold {
+  background: rgba(154,166,192,.1);
+  color: #9aa6c0;
+  border: 1px solid rgba(154,166,192,.2);
+}
+
+/* ══════════════════════════════════════════════════════════
+   KPI CARDS  (dividends tab + calendar tab)
+══════════════════════════════════════════════════════════ */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+.kpi-title {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #7a8aaa;
+  margin-bottom: 6px;
+}
+
+.kpi-value {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: #f0f4ff;
+  line-height: 1.1;
+}
+
+.kpi-sub {
+  font-size: .76rem;
+  color: #7a8aaa;
+  margin-top: 4px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DIVIDEND CALENDAR HEATMAP  (calendar tab)
+══════════════════════════════════════════════════════════ */
+.cal-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.cal-month {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(255,255,255,.07);
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative;
+  overflow: hidden;
+}
+
+.cal-month:hover {
+  border-color: rgba(201,162,39,.4);
+  background: rgba(201,162,39,.05);
+}
+
+.cal-month.has-income::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #7a5f15, #e8c050);
+  border-radius: 2px 2px 0 0;
+}
+
+.cal-month.best-month {
+  border-color: rgba(74,222,128,.35);
+  background: rgba(74,222,128,.04);
+}
+
+.cal-month.best-month::before {
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+.cal-month.dry-month {
+  opacity: .55;
+}
+
+.cal-month-name {
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: #7a8aaa;
+  margin-bottom: 6px;
+}
+
+.cal-month-amount {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #e8c050;
+}
+
+.cal-month-count {
+  font-size: .7rem;
+  color: #7a8aaa;
+  margin-top: 3px;
+}
+
+.cal-month-bar {
+  margin-top: 8px;
+  height: 4px;
+  background: rgba(255,255,255,.07);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.cal-month-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7a5f15, #e8c050);
+  border-radius: 99px;
+  transition: width .5s ease;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DIVIDEND FORECAST TABLE  (dividends tab)
+══════════════════════════════════════════════════════════ */
+.forecast-mini-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  justify-content: flex-end;
+}
+
+.forecast-mini-bar {
+  width: 60px;
+  height: 6px;
+  background: rgba(255,255,255,.07);
+  border-radius: 99px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.forecast-mini-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #7a5f15, #e8c050);
+  border-radius: 99px;
+}
+
+.forecast-mini-bar-fill.goal-reached {
+  background: linear-gradient(90deg, #16a34a, #4ade80);
+}
+
+/* ══════════════════════════════════════════════════════════
+   PAYOUT SCHEDULE TABLE  (calendar tab)
+══════════════════════════════════════════════════════════ */
+.payout-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: .82rem;
+}
+
+.payout-table th {
+  text-align: left;
+  padding: 8px 12px;
+  font-size: .72rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #7a8aaa;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.payout-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid rgba(255,255,255,.04);
+  color: #c8d4ec;
+  vertical-align: middle;
+}
+
+.payout-table tr:hover td {
+  background: rgba(255,255,255,.025);
+}
+
+.payout-table .month-header td {
+  background: rgba(201,162,39,.06);
+  color: #e8c050;
+  font-weight: 700;
+  font-size: .75rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  border-top: 1px solid rgba(201,162,39,.2);
+}
+
+/* ══════════════════════════════════════════════════════════
+   SECTOR INCOME BAR  (calendar tab)
+══════════════════════════════════════════════════════════ */
+.sector-income-bar-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+
+.sector-income-bar-label {
+  width: 110px;
+  font-size: .78rem;
+  color: #9aa6c0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-shrink: 0;
+}
+
+.sector-income-bar-track {
+  flex: 1;
+  height: 10px;
+  background: rgba(255,255,255,.06);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+.sector-income-bar-fill {
+  height: 100%;
+  border-radius: 99px;
+  transition: width .5s ease;
+}
+
+.sector-income-bar-pct {
+  font-size: .75rem;
+  color: #7a8aaa;
+  width: 38px;
+  text-align: right;
+  flex-shrink: 0;
+}
+
+/* ══════════════════════════════════════════════════════════
+   DRY MONTHS WARNING BOX  (calendar tab)
+══════════════════════════════════════════════════════════ */
+.dry-month-warning {
+  background: rgba(239,68,68,.07);
+  border: 1px solid rgba(239,68,68,.25);
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: .82rem;
+  color: #fca5a5;
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.dry-month-warning .warn-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE  (new components)
+══════════════════════════════════════════════════════════ */
+@media (max-width: 700px) {
+  .cal-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  #goal-banner .goal-header {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  #goal-banner .goal-meta {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .nachkauf-table {
+    font-size: .76rem;
+  }
+
+  .forecast-mini-bar {
+    width: 40px;
+  }
+}

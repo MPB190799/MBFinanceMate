@@ -1,0 +1,207 @@
+<section id="portfolio" class="tabcontent active">
+
+  <!-- ═══════════════════════════════════════════════
+       INCOME GOAL PROGRESS BAR
+  ═══════════════════════════════════════════════ -->
+  <div id="goal-banner" style="
+    background: linear-gradient(135deg, rgba(201,162,39,.1) 0%, rgba(61,156,245,.06) 100%);
+    border: 1px solid rgba(201,162,39,.3);
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 16px;
+    position: relative;
+    overflow: hidden;
+  ">
+    <div style="position:absolute;top:0;right:0;width:200px;height:100%;background:radial-gradient(ellipse at right,rgba(201,162,39,.08),transparent 70%);pointer-events:none;"></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+      <div>
+        <div style="font-size:.72rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9aa6c0;margin-bottom:4px;">Monthly Income Goal</div>
+        <div style="display:flex;align-items:baseline;gap:10px;">
+          <span id="goal-current-monthly" style="font-family:'JetBrains Mono',monospace;font-size:2rem;font-weight:800;color:#e8c050;">–</span>
+          <span style="color:#7a8aaa;font-size:1rem;">/ 2,000 €/month</span>
+        </div>
+      </div>
+      <div style="text-align:right;">
+        <div id="goal-pct-label" style="font-family:'JetBrains Mono',monospace;font-size:1.5rem;font-weight:800;color:#e8c050;">–%</div>
+        <div id="goal-remaining" style="font-size:.8rem;color:#7a8aaa;margin-top:2px;">–</div>
+      </div>
+    </div>
+    <!-- Progress Bar -->
+    <div style="height:10px;background:rgba(255,255,255,.06);border-radius:99px;overflow:hidden;margin-bottom:10px;">
+      <div id="goal-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#7a5f15,#c9a227,#e8c050);border-radius:99px;transition:width 800ms cubic-bezier(.2,.8,.2,1);min-width:4px;"></div>
+    </div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <span id="goal-yearly-income" style="font-size:.78rem;color:#9aa6c0;font-family:'JetBrains Mono',monospace;">Annual: –</span>
+      <span id="goal-eta" style="font-size:.78rem;color:#9aa6c0;">Target ETA: –</span>
+      <span id="goal-monthly-missing" style="font-size:.78rem;color:#9aa6c0;">Missing: –</span>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       KPI CARDS
+  ═══════════════════════════════════════════════ -->
+  <div class="section card">
+    <h3 class="card__title">Portfolio Overview</h3>
+    <div class="summary kpi" style="grid-template-columns:repeat(auto-fit,minmax(155px,1fr));">
+      <div class="card">
+        <div class="label">Portfolio Value</div>
+        <div id="portfolio-value-summary" class="value">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Invested</div>
+        <div id="total-invested" class="value">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Total Gain / Loss</div>
+        <div id="total-gain-loss" class="value">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Annual Div. Income</div>
+        <div id="total-dividend-income" class="value" style="color:#e8c050;">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Monthly Income</div>
+        <div id="kpi-monthly-income" class="value" style="color:#e8c050;">–</div>
+      </div>
+      <div class="card">
+        <div class="label">Dividends Received</div>
+        <div id="total-div-paid" class="value">–</div>
+      </div>
+      <div class="card kpi-yoc">
+        <div class="label">Avg. YOC (weighted)</div>
+        <div id="average-yoc" class="value" style="color:#e8c050;">–</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SMART NACHKAUF RANKING
+  ═══════════════════════════════════════════════ -->
+  <div class="section card" id="nachkauf-ranking-card">
+    <h3 class="card__title">Income Booster — Where to Invest Next?</h3>
+    <p style="font-size:.8rem;color:#7a8aaa;margin-bottom:14px;">
+      Ranked by dividend income generated per 1,000 € invested at current price. Helps you decide where to add next.
+    </p>
+    <div style="overflow-x:auto;">
+      <table class="portfolio-table">
+        <thead>
+          <tr>
+            <th>Position</th>
+            <th style="text-align:right;">Curr. Price (€)</th>
+            <th style="text-align:right;">Curr. Yield</th>
+            <th style="text-align:right;">YOC on Cost</th>
+            <th style="text-align:right;">+1,000€ → +Monthly Income</th>
+            <th style="text-align:right;">+1,000€ → +Annual Income</th>
+            <th style="text-align:right;">Rec.</th>
+          </tr>
+        </thead>
+        <tbody id="nachkauf-ranking-body">
+          <tr><td colspan="7" style="text-align:center;padding:20px;color:#7a8aaa;">⏳ Loading…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       ADD POSITION FORM
+  ═══════════════════════════════════════════════ -->
+  <div class="section card">
+    <h3 class="card__title">Add Position</h3>
+    <form id="stock-form" class="add-form" onsubmit="addPos(); return false;">
+      <div class="form-grid" style="grid-template-columns:repeat(auto-fill,minmax(150px,1fr));">
+        <div>
+          <label>Name</label>
+          <input id="f-name" class="input" type="text" placeholder="e.g. TORM A/S"/>
+        </div>
+        <div>
+          <label>ISIN</label>
+          <input id="f-isin" class="input" type="text" placeholder="e.g. GB00BZ3C…"/>
+        </div>
+        <div>
+          <label>Ticker</label>
+          <input id="f-ticker" class="input" type="text" placeholder="e.g. TRMD"/>
+        </div>
+        <div>
+          <label>Shares</label>
+          <input id="f-shares" class="input" type="number" step="any" required placeholder="e.g. 100"/>
+        </div>
+        <div>
+          <label>Avg. Buy Price (€)</label>
+          <input id="f-pp" class="input" type="number" step="any" required placeholder="e.g. 16.50"/>
+        </div>
+        <div>
+          <label>Dividends Received (€)</label>
+          <input id="f-divpaid" class="input" type="number" step="any" placeholder="e.g. 240.00"/>
+        </div>
+        <div>
+          <label>Ann. Div. Income (€)</label>
+          <input id="f-divincome" class="input" type="number" step="any" placeholder="e.g. 145.30"/>
+        </div>
+        <div>
+          <label>YOC Broker (%)</label>
+          <input id="f-yocbroker" class="input" type="number" step="any" placeholder="e.g. 9.14"/>
+        </div>
+      </div>
+      <div style="margin-top:14px;">
+        <button id="btn-add-pos" class="btn btn--gold" type="submit">
+          + Add Position
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       PORTFOLIO TABLE
+  ═══════════════════════════════════════════════ -->
+  <div class="section card">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:14px;">
+      <h3 class="card__title" style="margin-bottom:0;">Your Portfolio</h3>
+      <div style="display:flex;gap:8px;align-items:center;font-size:.76rem;color:#7a8aaa;">
+        <span style="display:inline-block;width:10px;height:10px;background:rgba(212,175,55,.3);border:1px solid #d4af37;border-radius:2px;"></span>YOC ≥ 8% (Gold)
+        <span style="display:inline-block;width:10px;height:10px;background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.35);border-radius:2px;margin-left:8px;"></span>YOC > Yield
+        <span style="display:inline-block;width:10px;height:10px;background:rgba(251,146,60,.08);border:1px solid rgba(251,146,60,.35);border-radius:2px;margin-left:8px;"></span>Yield ≥ 8%
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table class="portfolio-table table">
+        <thead>
+          <tr>
+            <th>Name / Sector</th>
+            <th>ISIN</th>
+            <th>Ticker</th>
+            <th style="text-align:right;">Shares</th>
+            <th style="text-align:right;">Avg. Price (€)</th>
+            <th style="text-align:right;">Price (€)</th>
+            <th style="text-align:right;">DPS (€)</th>
+            <th style="text-align:right;">Official Yield</th>
+            <th style="text-align:right;">Your YOC</th>
+            <th style="text-align:right;">Ann. Div (€)</th>
+            <th style="text-align:right;">Invested (€)</th>
+            <th style="text-align:right;">Value (€)</th>
+            <th style="text-align:right;">Gain / Loss</th>
+            <th style="text-align:center;">Edit</th>
+          </tr>
+        </thead>
+        <tbody id="portfolio-body">
+          <tr>
+            <td colspan="14" style="text-align:center;padding:24px;color:#7a8aaa;">
+              ⏳ Loading portfolio…
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <canvas id="allocationChart" style="width:100%;height:340px;margin-top:20px;display:block;"></canvas>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════
+       SMART WATCHLIST
+  ═══════════════════════════════════════════════ -->
+  <div class="section card">
+    <h3 class="card__title">Smart Watchlist — Signals & Alerts</h3>
+    <div id="smart-watchlist">
+      <p style="color:#7a8aaa;font-style:italic;">⏳ Loading signals…</p>
+    </div>
+  </div>
+
+</section>

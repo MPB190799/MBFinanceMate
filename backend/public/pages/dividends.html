@@ -1,0 +1,117 @@
+<section id="dividends" class="tabcontent active">
+
+  <!-- ── HEADER ── -->
+  <div style="margin-bottom:20px;">
+    <h2 style="font-size:1.1rem;font-weight:800;color:#f0f4ff;margin-bottom:4px;">Dividend Income Analysis</h2>
+    <p style="font-size:.8rem;color:#7a8aaa;">Your complete dividend cashflow — income history, projections, and YOC tracking.</p>
+  </div>
+
+  <!-- ── KPI CARDS ── -->
+  <div class="kpi-grid" style="margin-bottom:20px;">
+    <div class="card" style="background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.25);">
+      <div class="kpi-title">Avg. Monthly Income</div>
+      <div class="kpi-value" style="color:#e8c050;">
+        <span id="avgMonthly">0.00</span> €
+      </div>
+      <div style="font-size:.8rem;color:#7a8aaa;margin-top:6px;">Expected monthly cashflow</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-title">Goal: 2,000 €/month</div>
+      <div class="progress" style="margin-top:8px;">
+        <div id="progressBar" style="height:14px;background:linear-gradient(90deg,#7a5f15,#e8c050);border-radius:99px;width:0%;transition:width .5s ease;display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;color:#0a0c0f;min-width:32px;">0%</div>
+      </div>
+      <div style="font-size:.8rem;color:#7a8aaa;margin-top:6px;">Progress to monthly income target</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-title">Target Hit (Conservative)</div>
+      <div id="div-eta-conservative" class="kpi-value">–</div>
+      <div style="font-size:.8rem;color:#7a8aaa;margin-top:6px;">At 3% annual dividend growth</div>
+    </div>
+
+    <div class="card">
+      <div class="kpi-title">Target Hit (Base)</div>
+      <div id="div-eta-base" class="kpi-value" style="color:#e8c050;">–</div>
+      <div style="font-size:.8rem;color:#7a8aaa;margin-top:6px;">At 6% annual dividend growth</div>
+    </div>
+  </div>
+
+  <!-- ── DIVIDEND OVERVIEW (from API) ── -->
+  <div class="card" style="margin-bottom:16px;">
+    <div id="dividendOverview" style="color:#9aa6c0;">
+      Loading dividend analysis…
+    </div>
+  </div>
+
+  <!-- ── 10-YEAR FORECAST ── -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:16px;">
+      <div>
+        <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9aa6c0;display:flex;align-items:center;gap:8px;">
+          <span style="display:inline-block;width:3px;height:13px;background:#e8c050;border-radius:2px;"></span>
+          10-Year Dividend Projection
+        </div>
+        <p style="font-size:.78rem;color:#7a8aaa;margin-top:4px;">Three scenarios: Conservative (3%), Base (6%), Optimistic (10%). Goal line at 24,000 €/year (= 2,000 €/month).</p>
+      </div>
+      <!-- Scenario Legend -->
+      <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:.75rem;">
+        <span><span style="display:inline-block;width:18px;height:3px;background:#9aa6c0;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Conservative (3%)</span>
+        <span><span style="display:inline-block;width:18px;height:3px;background:#e8c050;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Base (6%)</span>
+        <span><span style="display:inline-block;width:18px;height:3px;background:#4ade80;border-radius:2px;vertical-align:middle;margin-right:5px;"></span>Optimistic (10%)</span>
+        <span><span style="display:inline-block;width:18px;height:2px;background:#ef4444;border-top:2px dashed #ef4444;vertical-align:middle;margin-right:5px;"></span>Goal (2,000€/mo)</span>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <div style="position:relative;height:320px;margin-bottom:16px;">
+      <canvas id="dividendForecastChart"></canvas>
+    </div>
+
+    <!-- Scenario Table -->
+    <div id="forecast-table-wrap" style="overflow-x:auto;margin-top:8px;">
+      <table class="portfolio-table" style="font-size:.8rem;">
+        <thead>
+          <tr>
+            <th>Year</th>
+            <th style="text-align:right;">Conservative (3%)</th>
+            <th style="text-align:right;">Base (6%)</th>
+            <th style="text-align:right;">Optimistic (10%)</th>
+            <th style="text-align:right;">Monthly (Base)</th>
+            <th style="text-align:right;">% of Goal</th>
+          </tr>
+        </thead>
+        <tbody id="forecast-table-body">
+          <tr><td colspan="6" style="text-align:center;padding:20px;color:#7a8aaa;">⏳ Loading forecast…</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ── YOC DEVELOPMENT ── -->
+  <div class="card" style="margin-bottom:16px;">
+    <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9aa6c0;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:3px;height:13px;background:#e8c050;border-radius:2px;"></span>
+      YOC Development (Yield on Cost)
+    </div>
+    <p style="font-size:.78rem;color:#7a8aaa;margin-bottom:16px;">Your true return on cost basis — the metric that really counts for long-term dividend investors.</p>
+    <div class="chart-wrap" style="height:240px;">
+      <canvas id="yocChart"></canvas>
+    </div>
+  </div>
+
+  <!-- ── PRO TIPS ── -->
+  <div class="card" style="border-left:3px solid rgba(201,162,39,.4);">
+    <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#e8c050;margin-bottom:10px;">Pro Tips for Cyclical Dividend Investors</div>
+    <ul style="margin:8px 0 0 16px;padding:0;font-size:.84rem;color:#c8d4ec;line-height:1.8;">
+      <li>High yields (&gt;15%) often signal cycle peaks → consider taking profits</li>
+      <li>Low yields (&lt;5%) at cycle lows → prime accumulation opportunity</li>
+      <li>Special dividends are common during shipping &amp; mining boom phases</li>
+      <li>YOC compounds: a 7% YOC today becomes 14% in ~10 years at 7% growth</li>
+    </ul>
+    <div style="margin-top:12px;font-size:.8rem;color:#9aa6c0;">
+      → Go to <strong style="color:#e8c050;">Market Cycles</strong> for sector momentum analysis relevant to your holdings.
+    </div>
+  </div>
+
+</section>

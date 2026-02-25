@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <title>MBFinanceMate – Portfolio Management</title>
+  <link rel="stylesheet" href="styles.css?v=4">
+  <link rel="icon" type="image/png" href="favicon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    /* ══ MASTER CSS VARIABLES – single source of truth ══ */
+    :root {
+      /* Backgrounds */
+      --bg-0:#080b10; --bg-1:#0d1018; --bg-2:#111520; --bg-3:#161b28; --elev:#1a2030;
+      /* Text */
+      --text-0:#f0f4ff; --text-1:#c8d4ec; --text-2:#7a8aaa; --muted:#4a5570;
+      /* Brand Gold */
+      --gold:#c9a227; --gold-bright:#e8c050; --gold-dim:#7a5f15;
+      --gold-glow:rgba(201,162,39,.18); --gold-strong:#e8c050;
+      /* Accent */
+      --accent:#3d9cf5; --accent-dim:rgba(61,156,245,.12);
+      /* Status */
+      --success:#22c55e; --warn:#f59e0b; --danger:#ef4444;
+      --danger-dim:rgba(239,68,68,.12); --orange:#fb923c;
+      /* Borders */
+      --border:1px solid rgba(255,255,255,.06);
+      --border-gold:1px solid rgba(201,162,39,.25);
+      --border-strong:1px solid rgba(201,162,39,.35);
+      /* Radii */
+      --r-sm:6px; --r-md:10px; --r-lg:14px; --r-xl:20px;
+      --radius-sm:6px; --radius-md:10px; --radius-lg:14px;
+      /* Shadows */
+      --shadow-sm:0 2px 8px rgba(0,0,0,.4);
+      --shadow-md:0 8px 32px rgba(0,0,0,.5);
+      --shadow-lg:0 20px 60px rgba(0,0,0,.7);
+      --shadow-1:0 8px 24px rgba(0,0,0,.35);
+      --shadow-gold:0 0 20px rgba(201,162,39,.18);
+      /* Fonts */
+      --font-body:'Sora',sans-serif; --font-mono:'JetBrains Mono',monospace;
+      /* Animation */
+      --ease:cubic-bezier(.2,.8,.2,1); --t:180ms var(--ease);
+      --transition:180ms cubic-bezier(.2,.8,.2,1);
+      /* Layout */
+      --header-h:64px;
+      --container-max:1840px;
+      --page-pad:clamp(14px,1.8vw,32px);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{
+      font-family:var(--font-body);background:var(--bg-0);color:var(--text-1);
+      line-height:1.6;min-height:100vh;
+      background-image:
+        radial-gradient(ellipse 1200px 600px at 80% -5%,rgba(201,162,39,.06) 0%,transparent 65%),
+        radial-gradient(ellipse 800px 500px at -5% 85%,rgba(61,156,245,.05) 0%,transparent 65%),
+        linear-gradient(rgba(255,255,255,.015) 1px,transparent 1px),
+        linear-gradient(90deg,rgba(255,255,255,.015) 1px,transparent 1px);
+      background-size:auto,auto,48px 48px,48px 48px;
+    }
+    ::-webkit-scrollbar{width:6px;height:6px;}
+    ::-webkit-scrollbar-track{background:var(--bg-1);}
+    ::-webkit-scrollbar-thumb{background:var(--muted);border-radius:3px;}
+    ::selection{background:var(--gold-glow);color:var(--gold-bright);}
+
+    /* HEADER */
+    .header{
+      position:sticky;top:0;z-index:100;height:var(--header-h);
+      display:flex;align-items:center;justify-content:space-between;
+      padding:0 28px;background:rgba(8,11,16,.92);
+      border-bottom:var(--border-gold);
+      backdrop-filter:blur(16px) saturate(1.4);
+    }
+    .header__brand{display:flex;align-items:center;gap:12px;}
+    .logo{width:38px;height:38px;border-radius:8px;filter:drop-shadow(0 4px 12px rgba(201,162,39,.3));}
+    .header__title{font-size:1.15rem;font-weight:800;letter-spacing:-.01em;color:var(--text-0);}
+    .header__title span{color:var(--gold-bright);}
+    .header__meta{display:flex;align-items:center;gap:20px;}
+    .header__badge{
+      font-family:var(--font-mono);font-size:.72rem;font-weight:600;
+      color:var(--text-2);background:var(--bg-2);border:var(--border);
+      border-radius:4px;padding:3px 8px;letter-spacing:.04em;
+    }
+    .header__pulse{
+      width:8px;height:8px;background:var(--success);border-radius:50%;
+      box-shadow:0 0 0 0 rgba(34,197,94,.4);animation:pulse 2.4s ease-in-out infinite;
+    }
+    @keyframes pulse{
+      0%,100%{box-shadow:0 0 0 0 rgba(34,197,94,.4);}
+      50%{box-shadow:0 0 0 6px rgba(34,197,94,0);}
+    }
+
+    /* TABS */
+    .tabs{
+      position:sticky;top:var(--header-h);z-index:90;
+      display:flex;align-items:center;gap:2px;padding:8px 16px;
+      background:rgba(8,11,16,.88);border-bottom:var(--border);
+      backdrop-filter:blur(12px);overflow-x:auto;scrollbar-width:none;
+    }
+    .tabs::-webkit-scrollbar{display:none;}
+    .tabbtn{
+      flex-shrink:0;display:flex;align-items:center;gap:6px;
+      padding:8px 16px;border:none;background:transparent;
+      color:var(--text-2);font-family:var(--font-body);font-size:.82rem;
+      font-weight:600;letter-spacing:.02em;border-radius:var(--r-md);
+      cursor:pointer;transition:var(--t);white-space:nowrap;position:relative;
+    }
+    .tabbtn::after{
+      content:'';position:absolute;bottom:-8px;left:50%;
+      transform:translateX(-50%) scaleX(0);width:60%;height:2px;
+      background:var(--gold-bright);border-radius:1px;transition:transform var(--t);
+    }
+    .tabbtn:hover{color:var(--text-1);background:rgba(255,255,255,.04);}
+    .tabbtn.active{color:var(--gold-bright);background:var(--gold-glow);}
+    .tabbtn.active::after{transform:translateX(-50%) scaleX(1);}
+    .tab-icon{font-size:.9rem;opacity:.8;}
+
+    /* MAIN */
+    main{max-width:1840px;margin:0 auto;padding:24px 20px;}
+    .tabcontent{display:none;}
+    .tabcontent.active{display:block;animation:fadeIn 220ms var(--ease) both;}
+    @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+
+    /* CARDS */
+    .card{
+      background:var(--bg-1);border:var(--border);
+      border-radius:var(--r-lg);padding:20px;margin-bottom:16px;
+    }
+    .card__header{margin-bottom:14px;}
+    .card__title{
+      font-size:.8rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--text-2);
+      display:flex;align-items:center;gap:8px;margin-bottom:14px;
+    }
+    .card__title::before{
+      content:'';display:inline-block;width:3px;height:13px;
+      background:var(--gold-bright);border-radius:2px;
+    }
+    .card__subtitle{font-size:.73rem;color:var(--muted);}
+    .subhint{font-size:.72rem;color:var(--muted);font-weight:400;letter-spacing:.02em;text-transform:none;}
+
+    /* KPI */
+    .summary.kpi{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;}
+    .kpi-card,.summary.kpi .card,.kpi .card{
+      background:var(--bg-2);border:var(--border);border-radius:var(--r-lg);
+      padding:16px 18px;transition:var(--t);
+    }
+    .kpi-card:hover,.summary.kpi .card:hover{border-color:rgba(201,162,39,.2);}
+    .kpi-card .label,.summary.kpi .card .label{font-family:var(--font-mono);font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);margin-bottom:6px;}
+    .kpi-card .value,.summary.kpi .card .value{font-family:var(--font-mono);font-size:1.25rem;font-weight:700;color:var(--text-0);margin-top:4px;}
+    .kpi-yoc .value{color:var(--gold-bright);}
+
+    /* FORMS */
+    .form-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px;align-items:end;}
+    .form-grid label{font-family:var(--font-mono);font-size:.67rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:4px;}
+    .form-actions{margin-top:14px;}
+    .input{
+      width:100%;padding:9px 12px;background:var(--bg-0);border:var(--border);
+      border-radius:var(--r-md);color:var(--text-0);font-family:var(--font-mono);
+      font-size:.82rem;outline:none;transition:var(--t);
+    }
+    .input:focus{border-color:rgba(201,162,39,.4);background:rgba(201,162,39,.04);box-shadow:0 0 0 3px rgba(201,162,39,.08);}
+    .input::placeholder{color:var(--muted);}
+
+    /* BUTTONS */
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;gap:6px;
+      padding:9px 18px;background:var(--gold);border:none;border-radius:var(--r-md);
+      color:#0a0c0f;font-family:var(--font-body);font-size:.82rem;font-weight:700;
+      letter-spacing:.03em;cursor:pointer;transition:var(--t);white-space:nowrap;
+    }
+    .btn:hover{background:var(--gold-bright);transform:translateY(-1px);box-shadow:0 4px 16px rgba(201,162,39,.3);}
+    .btn--ghost{background:transparent;border:var(--border);color:var(--text-1);}
+    .btn--ghost:hover{background:rgba(255,255,255,.04);border-color:rgba(255,255,255,.15);transform:none;}
+    .btn--danger{background:transparent;border:1px solid var(--danger);color:var(--danger);}
+    .btn--danger:hover{background:var(--danger-dim);transform:none;}
+    .btn--gold{background:var(--gold);}
+    .btn--orange{background:transparent;border:1px solid var(--orange);color:var(--orange);}
+    .btn--orange:hover{background:rgba(251,146,60,.1);transform:none;}
+    .btn--sm{padding:6px 12px;font-size:.75rem;}
+
+    /* TABLE */
+    .portfolio-table{width:100%;border-collapse:collapse;font-size:.82rem;}
+    .portfolio-table thead{background:var(--bg-2);border-bottom:var(--border-gold);}
+    .portfolio-table th{
+      padding:10px 14px;text-align:left;font-family:var(--font-mono);
+      font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+      color:var(--text-2);white-space:nowrap;
+    }
+    .portfolio-table td{
+      padding:9px 14px;border-bottom:var(--border);color:var(--text-1);
+      white-space:nowrap;transition:background var(--t);
+    }
+    .portfolio-table tbody tr:hover td{background:rgba(201,162,39,.05);}
+    .portfolio-table tbody tr:last-child td{border-bottom:none;}
+    .num{font-family:var(--font-mono);font-size:.8rem;text-align:right;}
+    .mc-up{color:var(--success);font-weight:600;}
+    .mc-down{color:var(--danger);font-weight:600;}
+    .mc-flat{color:var(--text-2);}
+    .mc-badge{padding:2px 8px;border-radius:4px;font-size:.72rem;font-weight:700;}
+    .mc-bull{background:rgba(34,197,94,.15);color:var(--success);}
+    .mc-bear{background:rgba(239,68,68,.15);color:var(--danger);}
+    .mc-mixed{background:rgba(255,255,255,.06);color:var(--text-2);}
+
+    /* SECTION */
+    .section{margin-bottom:20px;}
+
+    /* INFO BOX */
+    .info-box{
+      padding:10px 14px;border:var(--border);border-radius:var(--r-md);
+      background:var(--bg-2);color:var(--text-1);font-size:.84rem;
+      margin:6px 0;line-height:1.6;
+    }
+
+    /* CHART */
+    .chart{width:100%;display:block;border-radius:var(--r-md);}
+    .chart--tall{min-height:280px;}
+    .mt-md{margin-top:16px;}
+    .mt-lg{margin-top:24px;}
+
+    /* SKELETONS */
+    .skel{
+      height:14px;border-radius:4px;background:var(--bg-2);
+      background-image:linear-gradient(90deg,transparent 0%,rgba(255,255,255,.04) 50%,transparent 100%);
+      background-size:300% 100%;animation:shimmer 1.6s infinite linear;margin-bottom:8px;
+    }
+    @keyframes shimmer{from{background-position:100% 0;}to{background-position:-100% 0;}}
+
+    /* MODAL */
+    .modal{
+      position:fixed;inset:0;background:rgba(0,0,0,.78);backdrop-filter:blur(8px);
+      display:flex;align-items:center;justify-content:center;z-index:9999;
+    }
+    .modal.hidden{display:none;}
+    .modal-content{
+      width:min(580px,95vw);max-height:90vh;overflow-y:auto;
+      background:var(--bg-1);border:var(--border-gold);border-radius:var(--r-xl);
+      padding:28px;box-shadow:var(--shadow-lg);
+      display:flex;flex-direction:column;gap:14px;
+    }
+    .modal-header{display:flex;justify-content:space-between;align-items:center;}
+    .modal-close{background:none;border:none;color:var(--text-2);font-size:1.1rem;cursor:pointer;padding:4px 8px;border-radius:var(--r-sm);}
+    .modal-close:hover{color:var(--text-0);background:rgba(255,255,255,.06);}
+    .modal-title{font-size:.95rem;font-weight:700;color:var(--text-0);display:flex;align-items:center;gap:8px;}
+    .modal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .modal-grid label{font-family:var(--font-mono);font-size:.67rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:4px;}
+    .modal-actions{display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:4px;}
+    .modal-actions > div{display:flex;gap:8px;}
+    .fx-info{font-size:.8rem;color:var(--gold);padding:8px 10px;background:var(--gold-glow);border-radius:var(--r-sm);min-height:24px;}
+
+    /* MODAL SECTION DIVIDER */
+    .modal-section{
+      border-top:var(--border);padding-top:14px;
+    }
+    .modal-section-title{
+      font-family:var(--font-mono);font-size:.67rem;font-weight:700;letter-spacing:.1em;
+      text-transform:uppercase;color:var(--gold-bright);margin-bottom:10px;
+      display:flex;align-items:center;gap:6px;
+    }
+    .nachkauf-preview{
+      font-size:.8rem;padding:8px 12px;background:rgba(201,162,39,.06);
+      border:1px solid rgba(201,162,39,.2);border-radius:var(--r-sm);
+      min-height:28px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+    }
+
+    /* CURRENT INFO BOX */
+    .current-info{
+      display:flex;gap:10px;flex-wrap:wrap;font-family:var(--font-mono);
+      font-size:.75rem;padding:6px 10px;background:var(--bg-2);
+      border-radius:var(--r-sm);color:var(--text-2);
+    }
+    .current-info span{color:var(--text-1);}
+
+    /* MACRO */
+    .macro-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:16px;}
+    .macro-card{background:var(--bg-2);border:var(--border);border-radius:var(--r-lg);padding:14px 16px;}
+    .macro-card-title{font-size:.72rem;color:var(--text-2);margin-bottom:6px;font-family:var(--font-mono);}
+    .macro-card-value{font-size:1.2rem;font-weight:700;color:var(--text-0);display:flex;align-items:center;gap:8px;}
+    .macro-card-note{font-size:.75rem;color:var(--text-2);margin-top:4px;}
+    .macro-card-trend{font-size:1rem;}
+    .zins-impact{padding:10px 14px;background:rgba(61,156,245,.08);border-radius:var(--r-md);font-size:.84rem;color:var(--text-1);margin-bottom:12px;}
+    #macro-interpretation{font-size:.84rem;color:var(--text-1);line-height:1.7;}
+    .fg-card{border-color:rgba(201,162,39,.2);}
+
+    /* PROGRESS */
+    .progress{height:8px;background:var(--bg-3);border-radius:99px;overflow:hidden;margin:8px 0;}
+    #progressBar{height:100%;background:linear-gradient(90deg,var(--gold-dim),var(--gold-bright));border-radius:99px;transition:width 600ms var(--ease);min-width:4px;}
+
+    /* DIVIDENDS */
+    #avgMonthly{font-family:var(--font-mono);font-size:1.4rem;font-weight:700;color:var(--gold-bright);}
+    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-bottom:16px;}
+    .kpi-title{font-family:var(--font-mono);font-size:.67rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--text-2);margin-bottom:6px;}
+    .kpi-value{font-family:var(--font-mono);font-size:1.2rem;font-weight:700;color:var(--text-0);}
+    .chart-wrap{position:relative;}
+    .section-header{margin-bottom:14px;}
+    .section-header h2{font-size:1rem;font-weight:700;color:var(--text-0);}
+
+    /* CHARTS (Aktien-Analyse) */
+    .chart-search{display:flex;gap:8px;margin-bottom:16px;}
+    .chart-search input{flex:1;padding:10px 14px;background:var(--bg-0);border:var(--border);border-radius:var(--r-md);color:var(--text-0);font-family:var(--font-mono);font-size:.85rem;outline:none;}
+    .chart-search input:focus{border-color:rgba(201,162,39,.4);}
+    .chart-search button{padding:10px 20px;background:var(--gold);border:none;border-radius:var(--r-md);color:#0a0c0f;font-weight:700;cursor:pointer;}
+    .kpi-grid.kpi-grid--charts{grid-template-columns:repeat(auto-fit,minmax(140px,1fr));}
+    .rating-badge{display:inline-flex;padding:4px 10px;border-radius:4px;font-size:.76rem;font-weight:700;}
+    .rating-buy{background:rgba(34,197,94,.2);color:var(--success);}
+    .rating-sell{background:rgba(239,68,68,.2);color:var(--danger);}
+    .rating-neutral{background:rgba(255,255,255,.06);color:var(--text-2);}
+    .chart-wrap{height:260px;}
+
+    /* NEWS */
+    .news-meta{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px;font-size:.78rem;color:var(--text-2);}
+    .news-skeleton{padding:12px;background:var(--bg-2);border-radius:var(--r-md);margin-bottom:8px;}
+    .sk-line{height:12px;background:var(--bg-3);border-radius:3px;margin-bottom:6px;animation:shimmer 1.6s infinite linear;background-size:300% 100%;}
+
+    /* RESPONSIVE */
+    @media(max-width:640px){
+      .header{padding:0 14px;}
+      .header__meta{display:none;}
+      main{padding:14px 12px;}
+      .summary.kpi{grid-template-columns:repeat(2,1fr);}
+      .modal-grid{grid-template-columns:1fr;}
+      .form-grid{grid-template-columns:1fr 1fr;}
+    }
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.01ms !important;transition-duration:.01ms !important;}
+    }
+  </style>
+</head>
+<body>
+  <noscript>Bitte JavaScript aktivieren.</noscript>
+
+  <header class="header">
+    <div class="header__brand">
+      <img class="logo" src="Logo.png" alt="MBFinanceMate Logo"/>
+      <span class="header__title">MB<span>Finance</span>Mate</span>
+    </div>
+    <div class="header__meta">
+      <span class="header__badge">LIVE DATA</span>
+      <div class="header__pulse" title="Verbunden"></div>
+    </div>
+  </header>
+
+  <nav class="tabs">
+    <button class="tabbtn active" data-tab="portfolio" type="button"><span class="tab-icon">◆</span> Portfolio</button>
+    <button class="tabbtn" data-tab="dividends" type="button"><span class="tab-icon">◎</span> Dividends</button>
+    <button class="tabbtn" data-tab="calendar"  type="button"><span class="tab-icon">📅</span> Calendar</button>
+    <button class="tabbtn" data-tab="news"      type="button"><span class="tab-icon">◉</span> News</button>
+    <button class="tabbtn" data-tab="charts"    type="button"><span class="tab-icon">▲</span> Charts</button>
+    <button class="tabbtn" data-tab="cycles"    type="button"><span class="tab-icon">⟳</span> Market Cycles</button>
+    <button class="tabbtn" data-tab="sector"    type="button"><span class="tab-icon">⊞</span> Sectors</button>
+    <button class="tabbtn" data-tab="analyse"   type="button"><span class="tab-icon">⊛</span> Macro</button>
+  </nav>
+
+  <main>
+    <div id="content">
+      <p style="color:#9aa6c0;text-align:center;padding:60px 20px;">⏳ Lade…</p>
+    </div>
+  </main>
+
+  <!-- ═══════════════════════════════════════════
+       EDIT MODAL — optimiert mit Nachkauf-Funktion
+  ═══════════════════════════════════════════ -->
+  <div id="edit-modal" class="modal hidden">
+    <div class="modal-content">
+
+      <!-- Header -->
+      <div class="modal-header">
+        <div class="modal-title">✏️ Position bearbeiten</div>
+        <button class="modal-close" onclick="closeEdit()">✕</button>
+      </div>
+
+      <!-- FX Info -->
+      <div id="e-fx-info" class="fx-info"></div>
+
+      <!-- Aktuelle Kennzahlen (read-only Info) -->
+      <div id="e-current-info" class="current-info"></div>
+
+      <!-- ─── Basis-Daten ─── -->
+      <div class="modal-grid">
+        <div>
+          <label for="e-name">Name</label>
+          <input id="e-name" class="input" type="text"/>
+        </div>
+        <div>
+          <label for="e-shares">Shares (aktuell)</label>
+          <input id="e-shares" class="input" type="number" step="any"/>
+        </div>
+        <div>
+          <label for="e-pp">Ø Kaufpreis (€)</label>
+          <input id="e-pp" class="input" type="number" step="any"/>
+        </div>
+        <div>
+          <label for="e-divpaid">Div. erhalten gesamt (€)</label>
+          <input id="e-divpaid" class="input" type="number" step="any"/>
+        </div>
+        <div>
+          <label for="e-yocbroker">YOC Broker (%)</label>
+          <input id="e-yocbroker" class="input" type="number" step="any" placeholder="z.B. 9.14"/>
+        </div>
+        <div>
+          <label for="e-divincome">Div. Income/Jahr (€)</label>
+          <input id="e-divincome" class="input" type="number" step="any" placeholder="z.B. 332.24"/>
+        </div>
+      </div>
+
+      <!-- ─── NACHKAUF ─── -->
+      <div class="modal-section">
+        <div class="modal-section-title">
+          ➕ Nachkauf – Durchschnittspreisberechnung
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr auto;gap:10px;align-items:end;">
+          <div>
+            <label style="font-family:var(--font-mono);font-size:.67rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:4px;">+ Stückzahl</label>
+            <input id="e-nachkauf-shares" class="input" type="number" step="any" placeholder="z.B. 50" oninput="updateNachkaufPreview()"/>
+          </div>
+          <div>
+            <label style="font-family:var(--font-mono);font-size:.67rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--text-2);display:block;margin-bottom:4px;">Nachkaufpreis (€)</label>
+            <input id="e-nachkauf-price" class="input" type="number" step="any" placeholder="z.B. 24.50" oninput="updateNachkaufPreview()"/>
+          </div>
+          <button class="btn btn--orange btn--sm" onclick="applyNachkauf()" style="white-space:nowrap;">↓ Übernehmen</button>
+        </div>
+        <!-- Vorschau-Zeile -->
+        <div id="e-nachkauf-preview" class="nachkauf-preview" style="margin-top:8px;"></div>
+        <p style="font-size:.72rem;color:var(--muted);margin-top:6px;line-height:1.4;">
+          Berechnet automatisch den neuen Ø-Preis und aktualisiert Shares + Kaufpreis oben.
+        </p>
+      </div>
+
+      <!-- ─── Actions ─── -->
+      <div class="modal-actions">
+        <button id="e-delete-btn" class="btn btn--danger" onclick="deletePos()">🗑 Löschen</button>
+        <div>
+          <button class="btn btn--ghost" onclick="closeEdit()">Abbrechen</button>
+          <button id="e-save-btn" class="btn" onclick="saveEdit()">💾 Speichern</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="/portfolio.js"></script>
+  <script src="/news.js"      defer></script>
+  <script src="/sector.js"    defer></script>
+  <script src="/cycles.js"    defer></script>
+  <script src="/dividends.js" defer></script>
+  <script src="/charts.js"    defer></script>
+  <script src="/analyse.js"   defer></script>
+  <script src="/calendar.js"  defer></script>
+  <script src="/tabs.js"></script>
+
+</body>
+</html>

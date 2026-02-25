@@ -1,0 +1,87 @@
+<section id="calendar" class="tabcontent active">
+
+  <!-- HEADER -->
+  <div style="margin-bottom:20px;">
+    <h2 style="font-size:1.1rem;font-weight:800;color:#f0f4ff;margin-bottom:4px;">📅 Dividend Calendar</h2>
+    <p style="font-size:.8rem;color:#7a8aaa;">
+      Estimated monthly cashflow based on your current portfolio. Payment months are based on known payout schedules.
+      <span id="cal-note" style="color:#c9a227;"></span>
+    </p>
+  </div>
+
+  <!-- ANNUAL INCOME SUMMARY -->
+  <div id="cal-summary" style="
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+    gap:12px;
+    margin-bottom:20px;
+  ">
+    <div class="card" style="background:rgba(201,162,39,.08);border:1px solid rgba(201,162,39,.25);">
+      <div style="font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9aa6c0;margin-bottom:6px;">Annual Income</div>
+      <div id="cal-annual" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:#e8c050;">–</div>
+    </div>
+    <div class="card">
+      <div style="font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9aa6c0;margin-bottom:6px;">Avg. Monthly</div>
+      <div id="cal-avg" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:#f0f4ff;">–</div>
+    </div>
+    <div class="card">
+      <div style="font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9aa6c0;margin-bottom:6px;">Best Month</div>
+      <div id="cal-best" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:#4ade80;">–</div>
+    </div>
+    <div class="card">
+      <div style="font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9aa6c0;margin-bottom:6px;">Weakest Month</div>
+      <div id="cal-worst" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:#f87171;">–</div>
+    </div>
+    <div class="card">
+      <div style="font-size:.67rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9aa6c0;margin-bottom:6px;">Positions Paying</div>
+      <div id="cal-positions" style="font-family:'JetBrains Mono',monospace;font-size:1.4rem;font-weight:800;color:#f0f4ff;">–</div>
+    </div>
+  </div>
+
+  <!-- HEATMAP CALENDAR GRID -->
+  <div class="card" style="margin-bottom:20px;">
+    <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9aa6c0;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:3px;height:13px;background:#e8c050;border-radius:2px;"></span>
+      Monthly Cashflow Heatmap
+    </div>
+    <div id="cal-heatmap" style="
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:10px;
+    ">
+      <!-- filled by calendar.js -->
+    </div>
+  </div>
+
+  <!-- MONTHLY BREAKDOWN TABLE (click a month to expand) -->
+  <div class="card" style="margin-bottom:20px;">
+    <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9aa6c0;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:3px;height:13px;background:#e8c050;border-radius:2px;"></span>
+      Payout Schedule by Month
+    </div>
+    <div id="cal-schedule" style="overflow-x:auto;">
+      <!-- filled by calendar.js -->
+    </div>
+  </div>
+
+  <!-- DRY MONTHS WARNING -->
+  <div id="cal-dry-warning" style="display:none;" class="card">
+    <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#f87171;margin-bottom:10px;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:3px;height:13px;background:#ef4444;border-radius:2px;"></span>
+      Cashflow Gaps Detected
+    </div>
+    <div id="cal-dry-content" style="font-size:.84rem;color:#c8d4ec;line-height:1.6;"></div>
+  </div>
+
+  <!-- SECTOR DISTRIBUTION -->
+  <div class="card">
+    <div style="font-size:.8rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9aa6c0;margin-bottom:16px;display:flex;align-items:center;gap:8px;">
+      <span style="display:inline-block;width:3px;height:13px;background:#e8c050;border-radius:2px;"></span>
+      Income Distribution by Sector
+    </div>
+    <div id="cal-sector-dist" style="overflow-x:auto;">
+      <!-- filled by calendar.js -->
+    </div>
+  </div>
+
+</section>
