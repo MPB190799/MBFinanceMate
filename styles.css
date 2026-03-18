@@ -18,7 +18,7 @@
   --container-max: 1800px;
   --page-pad: clamp(14px, 1.8vw, 32px);
 
-  /* Sticky Offset (Header+Tabs) */
+  /* Sticky Offset (Header+Tabs) */h
   --sticky-offset: 122px;
 }
 @media (min-width:1400px){ :root{ --sticky-offset:126px; } }
@@ -28,7 +28,7 @@
 html,body{ height:100% }
 body{
   margin:0; padding:0;
-  font-family:Inter, Arial, system-ui;
+  font-family:'Outfit', 'Inter', system-ui;
   background:
     radial-gradient(1000px 700px at 85% -10%, rgba(212,175,55,.08), transparent 60%),
     radial-gradient(900px 600px at -10% 100%, rgba(130,207,255,.07), transparent 60%),
@@ -405,4 +405,34 @@ tbody tr:hover{ background:rgba(212,175,55,.06) }
 .rating-neutral{
   background:rgba(255,255,255,.04);
   color:var(--text-1);
+}
+
+
+/* ===== Modernization: IBM Plex Mono + Gold Glow + Scroll Reveal ===== */
+
+/* IBM Plex Mono for code/data elements */
+code, pre, .mono, [data-mono], .ticker-symbol, .price-value {
+    font-family: 'IBM Plex Mono', 'Fira Code', monospace;
+}
+
+/* Enhanced Gold Glow on hover */
+.glass-card:hover, .data-table:hover, .section-card:hover {
+    box-shadow: 
+      0 0 15px rgba(212,175,55,0.15),
+          0 0 30px rgba(212,175,55,0.08),
+          0 0 60px rgba(212,175,55,0.04),
+          0 8px 32px rgba(0,0,0,0.4);
+    transform: translateY(-2px);
+    transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Scroll Reveal Animations */
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.scroll-reveal.revealed {
+    opacity: 1;
+    transform: translateY(0);
 }
